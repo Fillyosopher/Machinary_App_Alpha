@@ -1,25 +1,19 @@
 package com.demo.Machinary_App;
 
-import it.sephiroth.android.library.util.v11.MultiChoiceModeListener;
 import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.AdapterView.OnItemClickListener;
 import it.sephiroth.android.library.widget.HListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import android.database.sqlite.*;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -33,14 +27,16 @@ import android.widget.EditText;
 public class MainActivity extends Activity implements OnClickListener, OnItemClickListener {
 	
 	private static final String LOG_TAG = "MainActivity";
-	EditText mEdit;
-	Button searchButton;
-	HListView listView;
-	Button mButton3;
-	HorAdapter mAdapter;
-	VerAdapter[] mSAdapters = {null, null, null, null, null, null, null, null, null, null};// TODO this is temporary and BAD CODE
 	
-	//Trello-like card strings
+	//Main View Declarations
+	EditText searchEditText;
+	Button searchButton;
+	HListView mHorListView;
+	Button scrollButton;
+	HorAdapter mHorAdapter;
+	
+	//Pre-loaded data strings
+	// TODO remove these when the SQLite is added
 	String[] typestring = new String[] {"OS Types", "Dog Breeds", "Random Stuff", "Catagory 4", "Catagory 5"};
 	String[][] cardstring = new String[][] { {"Android", "iPhone", "WindowsMobile",
 		"Blackberry", "WebOS", "Ubuntu", "Max OS X", "Linux", "Ubuntu",
@@ -53,93 +49,92 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		super.onCreate( savedInstanceState );
 		
 		setContentView( R.layout.activity_main );
-				
-		List<String> items = new ArrayList<String>();
+		
+		//HorListView onCreate
+		List<String> elementList = new ArrayList<String>();
 		for( int i = 0; i < typestring.length; i++ ) {
-			items.add( typestring[i] );
+			elementList.add( typestring[i] );
 		}
-		items.add( lasttype );
-		
-		List<List<String>> cardlist = new ArrayList<List<String>>();
+		elementList.add( lasttype ); //this allows the add/remove element buttons to appear
+		List<List<String>> cardList = new ArrayList<List<String>>();
 		for (int i = 0; i < cardstring.length; i++) {
-			List<String> listy = new ArrayList<String>();
+			List<String> cardlist = new ArrayList<String>();
 			for (int j = 0; j < cardstring[i].length; j++) {
-				listy.add(cardstring[i][j]);
+				cardlist.add(cardstring[i][j]);
 			}
-			cardlist.add(listy);
+			cardList.add(cardlist);
 		}
-		
-		mAdapter = new HorAdapter( this, R.layout.test_item_1, android.R.id.text1, R.id.listview2, items, cardlist );
-		listView.setHeaderDividersEnabled( true );
-		listView.setFooterDividersEnabled( true );
-		
-		listView.setAdapter( mAdapter );
-		listView.setOnItemClickListener( this );
-		
-		mButton3.setOnClickListener( this );
+		mHorAdapter = new HorAdapter( this, R.layout.test_item_1, android.R.id.text1, R.id.listview2, elementList, cardList );
+		mHorListView.setHeaderDividersEnabled( true );
+		mHorListView.setFooterDividersEnabled( true );
+		mHorListView.setAdapter( mHorAdapter );
+		mHorListView.setOnItemClickListener( this );
+			
+		scrollButton.setOnClickListener( this );
 	}
 	
 	@Override
 	public void onContentChanged() {
 		super.onContentChanged();
-		listView = (HListView) findViewById( R.id.hListView1 );
-		mButton3 = (Button) findViewById( R.id.button3 );
-		mEdit = (EditText) findViewById(R.id.edittext);
+		mHorListView = (HListView) findViewById( R.id.hListView1 );
+		scrollButton = (Button) findViewById( R.id.button3 );
+		searchEditText = (EditText) findViewById(R.id.edittext);
 		searchButton = (Button) findViewById(R.id.searchbutton);
 	}
 
 	@Override
 	public void onClick( View v ) {
 		final int id = v.getId();
-		if( id == mButton3.getId() ) {
+		if( id == scrollButton.getId() ) {
 			scrollList();
 		}
 	}	
 	
 	private void scrollList() {
-		listView.smoothScrollBy( 406, 0 );
+		mHorListView.smoothScrollBy( 406, 0 );
 	}
 	
-	private void addElements() {
-		if (mAdapter.mItems.size() < 11) {
-			ArrayList<String> list = new ArrayList<String>();
-			list.add(0, "Empty");
-			mAdapter.mCards.add( mAdapter.mCards.size()-1, list );
-			mAdapter.mItems.add( mAdapter.mItems.size()-1, "Category " + String.valueOf( mAdapter.mItems.size() ) );
-			mAdapter.notifyDataSetChanged();
-			listView.smoothScrollBy( 406, 0 );
-		}
-		Log.i( LOG_TAG, "Added Element: " + String.valueOf( mAdapter.mItems.size()-1 ) );
+	private void addElement() {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(0, "Empty");
+		mHorAdapter.vCards.add( mHorAdapter.vCards.size()-1, list );
+		//Generates the generic name for a new element "Catagory X"
+		mHorAdapter.hElements.add( mHorAdapter.hElements.size()-1, "Category " + String.valueOf( mHorAdapter.hElements.size() ) );
+		mHorAdapter.notifyDataSetChanged();
+		mHorListView.smoothScrollBy( 406, 0 );
+		Log.i( LOG_TAG, "Added Element: " + String.valueOf( mHorAdapter.hElements.size()-1 ) );
 	}
 	
-	private void removeElements() {
-		listView.smoothScrollBy( -406, 0 );
+	private void removeElement() {
+		mHorListView.smoothScrollBy( -406, 0 );
 		final Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 		    @Override
 		    public void run() {
-		    	if( mAdapter.mItems.size() > 1 & mAdapter.mItems.size() <= 11 ) {
-					int spot = mAdapter.mItems.size()-2;
-					mAdapter.mItems.remove(mAdapter.mItems.size()-1);
-					mSAdapters[spot] = null;
+		    	if( mHorAdapter.hElements.size() > 1 & mHorAdapter.hElements.size() <= 11 ) {
+					int spot = mHorAdapter.hElements.size()-2;
+					mHorAdapter.hElements.remove(mHorAdapter.hElements.size()-1);
+					mHorAdapter.hVerAdapters.remove(spot);
 				}
-				mAdapter.notifyDataSetChanged();
+				mHorAdapter.notifyDataSetChanged();
 		    }
 		}, 50);     // TODO problem
 		Log.i( LOG_TAG, "Removed an Element" );
 	}
 	
 	private void addCards(int arg0) {
-		List<String> list = mAdapter.mCards.get(arg0);
-		list.add(list.size(), "New Card");
-		mAdapter.notifyDataSetChanged();
+		//adds a new card to the end of both lists
+		mHorAdapter.vCards.get(arg0).add(mHorAdapter.vCards.get(arg0).size(), "New Card");
+		mHorAdapter.hVerAdapters.get(arg0).vCardList.add(mHorAdapter.hVerAdapters.get(arg0).vCardList.size(), "New Card");
+		mHorAdapter.hVerAdapters.get(arg0).notifyDataSetChanged();
 	}
 	
 	private void removeCards(int arg0) {
-		List<String> list = mAdapter.mCards.get(arg0);
+		List<String> list = mHorAdapter.vCards.get(arg0);
 		if(list.size() > 1){
 			list.remove(list.size()-1);
-			mAdapter.notifyDataSetChanged();
+			mHorAdapter.hVerAdapters.get(arg0).vCardList.remove(mHorAdapter.hVerAdapters.get(arg0).vCardList.size()-1);
+			mHorAdapter.hVerAdapters.get(arg0).notifyDataSetChanged();	
 		}
 	}
 	
@@ -151,14 +146,14 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	View.OnClickListener mHandler1 = new View.OnClickListener() {
 		@Override
 		public void onClick(View arg0) {
-			addElements();
+			addElement();
 		}
 	};
 	
 	View.OnClickListener mHandler2 = new View.OnClickListener() {
 		@Override
 		public void onClick(View arg0) {
-			removeElements();
+			removeElement();
 		}
 	};
 
@@ -179,16 +174,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	//Horizontal ListView
 	class HorAdapter extends ArrayAdapter<String> {
 		
-		List<String> mItems;
+		List<String> hElements;
 		LayoutInflater mInflater;
 		int mResource;
 		int mTextResId;
 		int mListResId;
-		List<List<String>> mCards;
-		Button mButton1;
-		Button mButton2;
-		List<Button> mButtons = new ArrayList<Button>();
-		List<ListView> mLists = new ArrayList<ListView>();
+		List<List<String>> vCards;
+		Button vAddButton;
+		Button vRemoveButton;
+		List<Button> vButtonList = new ArrayList<Button>();
+		List<ListView> hVerListViews = new ArrayList<ListView>();
+		List<VerAdapter> hVerAdapters = new ArrayList<VerAdapter>();
 		
 		public HorAdapter( Context context, int resourceId, int textViewResourceId, int listViewId, List<String> objects, List<List<String>> cards) {
 			super( context, resourceId, textViewResourceId, objects);
@@ -196,8 +192,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 			mResource = resourceId;
 			mTextResId = textViewResourceId;
 			mListResId = listViewId;
-			mItems = objects;
-			mCards = cards;			
+			hElements = objects;
+			vCards = cards;			
 		}
 		
 		@Override
@@ -217,7 +213,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		
 		@Override
 		public int getItemViewType( int position ) {
-			int out  =  position != mItems.size()-1 ? 0 : 1 ;
+			int out  =  position != hElements.size()-1 ? 0 : 1 ;
 			return out;
 		}
 		
@@ -230,35 +226,34 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 				}
 
 				TextView textView = (TextView) convertView.findViewById( mTextResId );
-				textView.setText( mItems.get(position) );
+				textView.setText( hElements.get(position) );
 				
-				mSAdapters[position] = new VerAdapter(getContext(), android.R.layout.simple_list_item_1, mCards.get(position));
-				
-				if(mLists.size() <= position){
-					mLists.add((ListView) convertView.findViewById( mListResId ));
+				if(hVerListViews.size() <= position){	
+					hVerAdapters.add(new VerAdapter(getContext(), android.R.layout.simple_list_item_1, vCards.get(position)));
+					hVerListViews.add((ListView) convertView.findViewById( mListResId ));
 				}
 				// must be reset on new data
-				mLists.get(position).setAdapter( mSAdapters[position] );
+				hVerListViews.get(position).setAdapter( hVerAdapters.get(position) );
 				
-				if(mButtons.size() <= position*2){
-					mButtons.add((Button) convertView.findViewById( R.id.button2add )) ;
-					mButtons.add((Button) convertView.findViewById( R.id.button2rem ) );
+				if(vButtonList.size() <= position*2){
+					vButtonList.add((Button) convertView.findViewById( R.id.button2add )) ;
+					vButtonList.add((Button) convertView.findViewById( R.id.button2rem ) );
 				}
 				// It's vital these are reset on new data
-				mButtons.get(position*2).setTag(position*2);
-				mButtons.get(position*2+1).setTag(position*2+1);
-				mButtons.get(position*2).setOnClickListener( mHandler3 );
-				mButtons.get(position*2+1).setOnClickListener( mHandler3 );
+				vButtonList.get(position*2).setTag(position*2);
+				vButtonList.get(position*2+1).setTag(position*2+1);
+				vButtonList.get(position*2).setOnClickListener( mHandler3 );
+				vButtonList.get(position*2+1).setOnClickListener( mHandler3 );
 				
 			} else {
 				if( null == convertView ) {
 					convertView = mInflater.inflate( R.layout.test_item_2, parent, false );
 				}
-				mButton1 = (Button) convertView.findViewById( R.id.button1add);
-				mButton2 = (Button) convertView.findViewById( R.id.button1rem);
+				vAddButton = (Button) convertView.findViewById( R.id.button1add);
+				vRemoveButton = (Button) convertView.findViewById( R.id.button1rem);
 			
-				mButton1.setOnClickListener( mHandler1 );
-				mButton2.setOnClickListener( mHandler2 );
+				vAddButton.setOnClickListener( mHandler1 );
+				vRemoveButton.setOnClickListener( mHandler2 );
 			}
 			return convertView;
 		}
@@ -266,27 +261,19 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	
 	//vertical List views
 	private class VerAdapter extends ArrayAdapter<String> {
-
-		HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+		List<String> vCardList = new ArrayList<String>();
 		
 		public VerAdapter(Context context, int textViewResourceId,
 				List<String> objects) {
 			super(context, textViewResourceId, objects);
 			for (int i = 0; i < objects.size(); ++i) {
-				mIdMap.put(objects.get(i), i);
+				vCardList.add(objects.get(i));
 			}
-		}
-
-		@Override
-		public long getItemId(int position) {
-			String item = getItem(position);
-			return mIdMap.get(item);
 		}
 
 		@Override
 		public boolean hasStableIds() {
 			return true;
 		}
-		
 	}
 }
