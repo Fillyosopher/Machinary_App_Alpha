@@ -151,15 +151,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	}
 	
 	private void addElements() {
-		ArrayList<String> list = new ArrayList<String>();
-		list.add(0, "Empty");
-		mAdapter.mCards.add( list );
-		mAdapter.mItems.add( "Category " + String.valueOf( mAdapter.mItems.size()+1 ) );
-		mAdapter.notifyDataSetChanged();
+		if (mAdapter.mItems.size() < 10) {
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(0, "Empty");
+			mAdapter.mCards.add( list );
+			mAdapter.mItems.add( "Category " + String.valueOf( mAdapter.mItems.size()+1 ) );
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 	
 	private void removeElements() {
-		if( mAdapter.mItems.size() > 0 & mAdapter.mItems.size() < 10 ) {
+		if( mAdapter.mItems.size() > 0 & mAdapter.mItems.size() <= 10 ) {
 			mAdapter.mItems.remove(mAdapter.mItems.size()-1);
 			mSAdapters[mAdapter.mItems.size()-1] = null;
 		}

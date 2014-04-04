@@ -28,7 +28,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	EditText searchEditText;
 	Button searchButton;
 	HListView mHorListView;
-	Button scrollButton;
 	MachineAdapter mHorAdapter;
 	
 	//SQLite
@@ -43,16 +42,21 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		//SQLite datasource
 		datasource = new CoreDataSource(this);
 	    datasource.open();
-
-		//HorListView initial populating
+	    
+	    datasource.addList(new List2(0,"New list","Name"));
+		
+	    //HorListView initial populating
 		//This converts the new datasource to the old viewer
 	    //eventually, this should be converted.
 	    List<String> elementList = new ArrayList<String>();
-		List<List<Machine>> cardList = new ArrayList<List<Machine>>();
-		List<Machine> machineList = datasource.getAllMachines();
-		List<List2> listList = datasource.getAllLists();
+	    List<List<Machine>> cardList = new ArrayList<List<Machine>>();
+	    List<Machine> machineList = datasource.getAllMachines();
+	    List<List2> listList = datasource.getAllLists();
 		
-		for (int i = 1; i < listList.size() ; i++) {
+		Log.i( LOG_TAG, "First Machine: " + String.valueOf( machineList.get(0).getName() ) );
+		Log.i( LOG_TAG, "First List: " + String.valueOf( listList.get(0).getName() ) );
+		
+		for (int i = 0; i < listList.size() ; i++) {
 			int j;
 			elementList.add( listList.get(i).getName() );
 			List<Machine> cardlist = new ArrayList<Machine>();
@@ -62,21 +66,21 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 				}
 			}
 			if ( j == 0 ) {
-				datasource.addMachine(new Machine());
-				cardlist.add(machineList.get(j));
+			    datasource.addMachine(new Machine(0,"New Machine",0,0,0,0,"red"));
+			    cardlist.add(machineList.get(j));
 			}
 			cardList.add(cardlist);
 		}
 		elementList.add( lasttype ); //this allows the add/remove element buttons to appear
-			
+
+		Log.i( LOG_TAG, "First card now: " + String.valueOf( cardList.get(0).get(0).getName() ) );
+		Log.i( LOG_TAG, "First list now: " + elementList.get(0) );
 		mHorAdapter = new MachineAdapter( this, elementList, cardList, mHorListView, datasource );
 		
 		mHorListView.setHeaderDividersEnabled( true );
 		mHorListView.setFooterDividersEnabled( true );
 		mHorListView.setAdapter( mHorAdapter );
 		mHorListView.setOnItemClickListener( this );
-		
-		scrollButton.setOnClickListener( this );
 	}
 	
 	@Override
@@ -88,15 +92,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 
 	@Override
 	public void onClick( View v ) {
-		final int id = v.getId();
-		if( id == scrollButton.getId() ) {
-			scrollList();
-		}
+		//final int id = v.getId();
 	}	
-	
-	private void scrollList() {
-		mHorListView.smoothScrollBy( 406, 0 );
-	}
 	
 	@Override
 	public void onItemClick( AdapterView<?> parent, View veiw, int position, long id ) {

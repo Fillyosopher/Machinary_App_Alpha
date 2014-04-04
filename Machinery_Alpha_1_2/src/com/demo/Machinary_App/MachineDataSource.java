@@ -16,7 +16,7 @@ public class MachineDataSource {
 	private SQLiteDatabase database;
 	private MachinerySQLiteHelper dbHelper;
 	private String[] allColumns = {MachinerySQLiteHelper.COLUMN_ID, MachinerySQLiteHelper.COLUMN_NAMES[0], MachinerySQLiteHelper.COLUMN_NAMES[1], MachinerySQLiteHelper.COLUMN_NAMES[2]};
-
+	
 	public MachineDataSource(Context context) {
 		dbHelper = new MachinerySQLiteHelper(context);
 	}

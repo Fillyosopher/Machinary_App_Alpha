@@ -1,8 +1,5 @@
 package com.demo.Machinery_App;
 
-import java.util.HashMap;
-import java.util.List;
-
 public class Machine{
 	// DATA STORED IN SQLite
 	// if you edit this, you should edit the helper
@@ -16,7 +13,7 @@ public class Machine{
 	// TODO implement these data types
 	private long 	picture;
 	private long 	thumbnail;
-	private long 	dateAdded;
+	//private long 	dateAdded;
 	// Part List
 	// Greasing Intervals
 	// Service Intervals
@@ -34,7 +31,7 @@ public class Machine{
 	}
 
 	public Machine() {
-		// TODO Auto-generated constructor stub
+		this.name = "New Card";
 	}
 
 	public long getId() {
@@ -107,6 +104,11 @@ public class Machine{
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 	
 	/*// Will be used by the ArrayAdapter in the ListView

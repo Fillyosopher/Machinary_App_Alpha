@@ -1,14 +1,18 @@
 package com.demo.Machinary_App;
 
+import android.graphics.Bitmap;
+
 public class Machine implements Colors{
 	// DATA STORED IN SQLite
 	// if you edit this, you should edit 
-	private String comment;
-	//private picture;
 	private long id;
 	private String name;
 	private int color;
-	
+	private String comment;
+	// TODO generate with ThumbnalUtils.extractThumbnail
+	private Bitmap thumbnail;
+	//private String picture;
+	// TODO separate table for pictures, linked by id 
 	
 	public long getId() {
 		return id;
@@ -51,5 +55,7 @@ public class Machine implements Colors{
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	// TODO static function machine to cursor
 	
 }

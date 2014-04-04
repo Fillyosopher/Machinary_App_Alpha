@@ -26,11 +26,14 @@ public class MachinerySQLiteHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		// Database creation sql statement
+		
+		// TODO, switch over to separate 'Table' class onCreate
+		// TODO, make seperate table for Trello lists and card lists
 		String DATABASE_CREATE = "create table " + TABLE_NAME + "(" + COLUMN_ID + " integer primary key autoincrement";
 		for (int i=0; i<COLUMN_NUMBER; i++){
 			DATABASE_CREATE += " " + COLUMN_NAMES[i];
 			DATABASE_CREATE += " " + COLUMN_TYPES[i] + ",";
-		}		
+		}
 		DATABASE_CREATE += ");";
 		
 		database.execSQL(DATABASE_CREATE);
@@ -38,6 +41,7 @@ public class MachinerySQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO, switch over to separate 'Table' class onUpgrade
 		Log.w(MachinerySQLiteHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 				+ newVersion + ", which will destroy all old data");

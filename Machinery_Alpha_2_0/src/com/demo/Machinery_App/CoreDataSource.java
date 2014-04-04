@@ -52,12 +52,12 @@ public class CoreDataSource {
 	// Create ContentValues from a Machine object
 	public ContentValues getMachineContent(Machine machine){
 		ContentValues values = new ContentValues();
-	    values.put(dbMHelper.COLUMN_NAMES[0], machine.getName()); // Machine Name
-	    values.put(dbMHelper.COLUMN_NAMES[1], machine.getList()); // Machine List Number
-	    values.put(dbMHelper.COLUMN_NAMES[2], machine.getYear()); // Machine Modal Year
-	    values.put(dbMHelper.COLUMN_NAMES[3], machine.getLastGrease()); // Machine Last Grease
-	    values.put(dbMHelper.COLUMN_NAMES[4], machine.getLastMaintenance()); // Machine Last Maintenance
-	    values.put(dbMHelper.COLUMN_NAMES[5], machine.getColor()); // Machine Card Color
+	    values.put(MachineSQLiteHelper.COLUMN_NAMES[0], machine.getName()); // Machine Name
+	    values.put(MachineSQLiteHelper.COLUMN_NAMES[1], machine.getList()); // Machine List Number
+	    values.put(MachineSQLiteHelper.COLUMN_NAMES[2], machine.getYear()); // Machine Modal Year
+	    values.put(MachineSQLiteHelper.COLUMN_NAMES[3], machine.getLastGrease()); // Machine Last Grease
+	    values.put(MachineSQLiteHelper.COLUMN_NAMES[4], machine.getLastMaintenance()); // Machine Last Maintenance
+	    values.put(MachineSQLiteHelper.COLUMN_NAMES[5], machine.getColor()); // Machine Card Color
 	    // TODO, add in other columns as needed
 	    //values.put(dbMHelper.COLUMN_NAMES[6], machine.getList()); // Machine List Number
 	    return values;
@@ -75,8 +75,8 @@ public class CoreDataSource {
 	// Create ContentValues from a List object
 	public ContentValues getListContent(List2 list){
 		ContentValues values = new ContentValues();
-	    values.put(dbLHelper.COLUMN_NAMES[0], list.getName()); // List Name
-	    values.put(dbLHelper.COLUMN_NAMES[1], list.getSortBy()); // List Sort Type
+	    values.put(ListSQLiteHelper.COLUMN_NAMES[0], list.getName()); // List Name
+	    values.put(ListSQLiteHelper.COLUMN_NAMES[1], list.getSortBy()); // List Sort Type
 	    return values;
 	}
 	
@@ -92,8 +92,8 @@ public class CoreDataSource {
 	// Create ContentValues from a Picture object
 	public ContentValues getPictureContent(Picture Picture){
 		ContentValues values = new ContentValues();
-	    values.put(dbPHelper.COLUMN_NAMES[0], Picture.getType()); // Picture Name
-	    values.put(dbPHelper.COLUMN_NAMES[1], Picture.getPicture()); // Picture Sort Type
+	    values.put(PictureSQLiteHelper.COLUMN_NAMES[0], Picture.getType()); // Picture Name
+	    values.put(PictureSQLiteHelper.COLUMN_NAMES[1], Picture.getPicture()); // Picture Sort Type
 	    return values;
 	}
 
@@ -102,15 +102,15 @@ public class CoreDataSource {
 	public void addMachine(Machine machine) {
 	    ContentValues values = getMachineContent(machine);
 	    // Inserting Row
-	    databaseMachine.insert(dbMHelper.TABLE_NAME, null, values);
+	    databaseMachine.insert(MachineSQLiteHelper.TABLE_NAME, null, values);
 	}
 	 
 	// Getting single machine
 	public Machine getMachine(int id) {
 	    Cursor cursor = databaseMachine.query(
-	    		dbMHelper.TABLE_NAME,
-	    		dbMHelper.ALL_COLUMNS, 
-	    		dbMHelper.COLUMN_ID + "=?",
+	    		MachineSQLiteHelper.TABLE_NAME,
+	    		MachineSQLiteHelper.ALL_COLUMNS, 
+	    		MachineSQLiteHelper.COLUMN_ID + "=?",
 	            new String[] { String.valueOf(id) }, 
 	            null, null, null, null);
 	    if (cursor != null)
@@ -125,13 +125,13 @@ public class CoreDataSource {
 	public List<Machine> getAllMachines() {
 		List<Machine> machineList = new ArrayList<Machine>();
 	    // Select All Query
-	    String selectQuery = "SELECT  * FROM " + dbMHelper.TABLE_NAME;
-	 
+	    String selectQuery = "SELECT  * FROM " + MachineSQLiteHelper.TABLE_NAME;
+	    
 	    Cursor cursor = databaseMachine.rawQuery(selectQuery, null);
-	 
+	    
 	    // looping through all rows and adding to list
 	    if (cursor.moveToFirst()) {
-	        do {
+	    	do {
 	            Machine machine = cursor2Machine(cursor);
 	        	// Adding contact to list
 	            machineList.add(machine);
@@ -144,7 +144,7 @@ public class CoreDataSource {
 	 
 	// Getting machines Count
 	public int getMachinesCount() {
-        String countQuery = "SELECT  * FROM " + dbMHelper.TABLE_NAME;
+        String countQuery = "SELECT  * FROM " + MachineSQLiteHelper.TABLE_NAME;
         Cursor cursor = databaseMachine.rawQuery(countQuery, null);
         cursor.close();
  
@@ -157,13 +157,13 @@ public class CoreDataSource {
 		ContentValues values = getMachineContent(machine);
 	 
 	    // updating row
-	    return databaseMachine.update(dbMHelper.TABLE_NAME, values, dbMHelper.COLUMN_ID + " = ?",
+	    return databaseMachine.update(MachineSQLiteHelper.TABLE_NAME, values, MachineSQLiteHelper.COLUMN_ID + " = ?",
 	            new String[] { String.valueOf(machine.getId()) });
 	}
 	 
 	// Deleting single machine
 	public void deleteMachine(Machine machine) {
-	    databaseMachine.delete(dbMHelper.TABLE_NAME, dbMHelper.COLUMN_ID + " = ?",
+	    databaseMachine.delete(MachineSQLiteHelper.TABLE_NAME, MachineSQLiteHelper.COLUMN_ID + " = ?",
 	            new String[] { String.valueOf(machine.getId()) });
 	}
 	
@@ -172,15 +172,15 @@ public class CoreDataSource {
 	public void addList(List2 list) {
 	    ContentValues values = getListContent(list);
 	    // Inserting Row
-	    databaseList.insert(dbLHelper.TABLE_NAME, null, values);
+	    databaseList.insert(ListSQLiteHelper.TABLE_NAME, null, values);
 	}
 	 
 	// Getting single list
 	public List2 getList(int id) {
 	    Cursor cursor = databaseList.query(
-	    		dbLHelper.TABLE_NAME,
-	    		dbLHelper.ALL_COLUMNS, 
-	    		dbLHelper.COLUMN_ID + "=?",
+	    		ListSQLiteHelper.TABLE_NAME,
+	    		ListSQLiteHelper.ALL_COLUMNS, 
+	    		ListSQLiteHelper.COLUMN_ID + "=?",
 	            new String[] { String.valueOf(id) }, 
 	            null, null, null, null);
 	    if (cursor != null)
@@ -195,7 +195,7 @@ public class CoreDataSource {
 	public List<List2> getAllLists() {
 		List<List2> listList = new ArrayList<List2>();
 	    // Select All Query
-	    String selectQuery = "SELECT  * FROM " + dbLHelper.TABLE_NAME;
+	    String selectQuery = "SELECT  * FROM " + ListSQLiteHelper.TABLE_NAME;
 	 
 	    Cursor cursor = databaseList.rawQuery(selectQuery, null);
 	 
@@ -214,7 +214,7 @@ public class CoreDataSource {
 	 
 	// Getting lists Count
 	public int getListsCount() {
-        String countQuery = "SELECT  * FROM " + dbLHelper.TABLE_NAME;
+        String countQuery = "SELECT  * FROM " + ListSQLiteHelper.TABLE_NAME;
         Cursor cursor = databaseList.rawQuery(countQuery, null);
         cursor.close();
  
@@ -227,13 +227,13 @@ public class CoreDataSource {
 		ContentValues values = getListContent(list);
 	 
 	    // updating row
-	    return databaseList.update(dbLHelper.TABLE_NAME, values, dbLHelper.COLUMN_ID + " = ?",
+	    return databaseList.update(ListSQLiteHelper.TABLE_NAME, values, ListSQLiteHelper.COLUMN_ID + " = ?",
 	            new String[] { String.valueOf(list.getId()) });
 	}
 	 
 	// Deleting single list
 	public void deleteList(List2 list) {
-	    databaseList.delete(dbLHelper.TABLE_NAME, dbLHelper.COLUMN_ID + " = ?",
+	    databaseList.delete(ListSQLiteHelper.TABLE_NAME, ListSQLiteHelper.COLUMN_ID + " = ?",
 	            new String[] { String.valueOf(list.getId()) });
 	}
 
@@ -242,15 +242,15 @@ public class CoreDataSource {
 	public void addPicture(Picture Picture) {
 	    ContentValues values = getPictureContent(Picture);
 	    // Inserting Row
-	    databasePicture.insert(dbPHelper.TABLE_NAME, null, values);
+	    databasePicture.insert(PictureSQLiteHelper.TABLE_NAME, null, values);
 	}
 	 
 	// Getting single Picture
 	public Picture getPicture(int id) {
 	    Cursor cursor = databasePicture.query(
-	    		dbPHelper.TABLE_NAME,
-	    		dbPHelper.ALL_COLUMNS, 
-	    		dbPHelper.COLUMN_ID + "=?",
+	    		PictureSQLiteHelper.TABLE_NAME,
+	    		PictureSQLiteHelper.ALL_COLUMNS, 
+	    		PictureSQLiteHelper.COLUMN_ID + "=?",
 	            new String[] { String.valueOf(id) }, 
 	            null, null, null, null);
 	    if (cursor != null)
@@ -265,7 +265,7 @@ public class CoreDataSource {
 	public List<Picture> getAllPictures() {
 		List<Picture> listPicture = new ArrayList<Picture>();
 	    // Select All Query
-	    String selectQuery = "SELECT  * FROM " + dbPHelper.TABLE_NAME;
+	    String selectQuery = "SELECT  * FROM " + PictureSQLiteHelper.TABLE_NAME;
 	 
 	    Cursor cursor = databasePicture.rawQuery(selectQuery, null);
 	 
@@ -284,7 +284,7 @@ public class CoreDataSource {
 	 
 	// Getting Pictures Count
 	public int getPicturesCount() {
-        String countQuery = "SELECT  * FROM " + dbPHelper.TABLE_NAME;
+        String countQuery = "SELECT  * FROM " + PictureSQLiteHelper.TABLE_NAME;
         Cursor cursor = databasePicture.rawQuery(countQuery, null);
         cursor.close();
  
@@ -297,13 +297,13 @@ public class CoreDataSource {
 		ContentValues values = getPictureContent(picture);
 	 
 	    // updating row
-	    return databasePicture.update(dbPHelper.TABLE_NAME, values, dbPHelper.COLUMN_ID + " = ?",
+	    return databasePicture.update(PictureSQLiteHelper.TABLE_NAME, values, PictureSQLiteHelper.COLUMN_ID + " = ?",
 	            new String[] { String.valueOf(picture.getId()) });
 	}
 	 
 	// Deleting single picture
 	public void deletePicture(Picture picture) {
-	    databasePicture.delete(dbPHelper.TABLE_NAME, dbPHelper.COLUMN_ID + " = ?",
+	    databasePicture.delete(PictureSQLiteHelper.TABLE_NAME, PictureSQLiteHelper.COLUMN_ID + " = ?",
 	            new String[] { String.valueOf(picture.getId()) });
 	}
 };

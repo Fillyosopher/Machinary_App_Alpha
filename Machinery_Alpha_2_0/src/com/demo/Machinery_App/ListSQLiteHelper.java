@@ -1,5 +1,6 @@
 package com.demo.Machinery_App;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -35,6 +36,11 @@ public class ListSQLiteHelper extends SQLiteOpenHelper {
 		DATABASE_CREATE += ");";
 		
 		database.execSQL(DATABASE_CREATE);
+	
+		ContentValues values = new ContentValues();
+	    values.put(ListSQLiteHelper.COLUMN_NAMES[0], "New List"); // List Name
+	    values.put(ListSQLiteHelper.COLUMN_NAMES[1], "Name"); // List Sort Type
+	    database.insert(TABLE_NAME, null, values);
 	}
 
 	@Override
