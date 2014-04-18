@@ -37,4 +37,8 @@ public class List2 {
 		this.sortBy = sortBy;
 	}
 	
+	@Override
+	public String toString(){
+		return name;
+	}
 }

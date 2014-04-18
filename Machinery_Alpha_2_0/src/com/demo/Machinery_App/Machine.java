@@ -13,7 +13,9 @@ public class Machine{
 	// TODO implement these data types
 	private long 	picture;
 	private long 	thumbnail;
-	//private long 	dateAdded;
+	// private boolean 	isGreaseable;
+	// private boolean 	isServicable;
+	// private long 	dateAdded;
 	// Part List
 	// Greasing Intervals
 	// Service Intervals

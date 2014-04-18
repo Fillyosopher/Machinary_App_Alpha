@@ -17,7 +17,7 @@ public class ListSQLiteHelper extends SQLiteOpenHelper {
 	public static final int COLUMN_NUMBER = 2;
 
 	private static final String DATABASE_NAME = "lists.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 4;
 	
 	public static final String[] ALL_COLUMNS = {	"_id", "Name", "Sorting"};
 

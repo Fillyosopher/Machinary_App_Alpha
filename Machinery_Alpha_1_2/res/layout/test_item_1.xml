@@ -7,6 +7,14 @@
     android:gravity="top" 
     android:focusable="false" >
  
+    
+<!--     	First Text view is for the model year and name
+			Next three lines are a slightly smaller text:
+			First line is the last note (shortened to ~30 characters)
+			Second line is Last greaseing (only if Greaseable)
+			Third Line is Last service (Only if Serviceable)
+ -->
+    
     <TextView
         android:id="@android:id/text1"
         android:layout_width="match_parent"

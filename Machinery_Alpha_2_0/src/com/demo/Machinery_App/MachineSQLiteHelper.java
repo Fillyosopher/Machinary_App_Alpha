@@ -22,7 +22,7 @@ public class MachineSQLiteHelper extends SQLiteOpenHelper {
 													"Last_Maintenance", "Color", "Filter_Info"};
 
 	private static final String DATABASE_NAME = "machines.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 5;
 
 	
 	public MachineSQLiteHelper(Context context) {

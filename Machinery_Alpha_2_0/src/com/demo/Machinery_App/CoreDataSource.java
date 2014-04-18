@@ -142,6 +142,25 @@ public class CoreDataSource {
 	    return machineList;
 	}
 	 
+	// Getting Machine Carddata
+	public List<String> getMachineNamesFromList(List2 list) {
+		List<String> nameList = new ArrayList<String>();
+		
+		String sqlQuery = "SELECT * FROM " + MachineSQLiteHelper.TABLE_NAME + " where list = " + list.getId() + " order by " + list.getSortBy();
+
+		Cursor cursor = databaseMachine.rawQuery(sqlQuery, null);
+		
+	    if (cursor.moveToFirst()) {
+	    	do {
+	            Machine machine = cursor2Machine(cursor);
+	        	// Adding contact to list
+	            nameList.add(machine.getName());
+	        } while (cursor.moveToNext());
+	    }
+		
+	    return nameList;
+	}
+	
 	// Getting machines Count
 	public int getMachinesCount() {
         String countQuery = "SELECT  * FROM " + MachineSQLiteHelper.TABLE_NAME;

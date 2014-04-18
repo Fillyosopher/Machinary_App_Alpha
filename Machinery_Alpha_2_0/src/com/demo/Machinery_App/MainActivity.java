@@ -43,44 +43,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		datasource = new CoreDataSource(this);
 	    datasource.open();
 	    
-	    datasource.addList(new List2(0,"New list","Name"));
-		
 	    //HorListView initial populating
 		//This converts the new datasource to the old viewer
 	    //eventually, this should be converted.
-	    List<String> elementList = new ArrayList<String>();
-	    List<List<Machine>> cardList = new ArrayList<List<Machine>>();
-	    List<Machine> machineList = datasource.getAllMachines();
 	    List<List2> listList = datasource.getAllLists();
-		
-		Log.i( LOG_TAG, "First Machine: " + String.valueOf( machineList.get(0).getName() ) );
-		Log.i( LOG_TAG, "First List: " + String.valueOf( listList.get(0).getName() ) );
-		
-		for (int i = 0; i < listList.size() ; i++) {
-			int j;
-			elementList.add( listList.get(i).getName() );
-			List<Machine> cardlist = new ArrayList<Machine>();
-			for (j = 0; j < machineList.size(); j++) {
-				if (machineList.get(j).getList() == i){
-					cardlist.add(machineList.get(j));	
-				}
-			}
-			if ( j == 0 ) {
-			    datasource.addMachine(new Machine(0,"New Machine",0,0,0,0,"red"));
-			    cardlist.add(machineList.get(j));
-			}
-			cardList.add(cardlist);
-		}
-		elementList.add( lasttype ); //this allows the add/remove element buttons to appear
-
-		Log.i( LOG_TAG, "First card now: " + String.valueOf( cardList.get(0).get(0).getName() ) );
-		Log.i( LOG_TAG, "First list now: " + elementList.get(0) );
-		mHorAdapter = new MachineAdapter( this, elementList, cardList, mHorListView, datasource );
+		mHorAdapter = new MachineAdapter( this, listList, mHorListView, datasource );
 		
 		mHorListView.setHeaderDividersEnabled( true );
 		mHorListView.setFooterDividersEnabled( true );
 		mHorListView.setAdapter( mHorAdapter );
 		mHorListView.setOnItemClickListener( this );
+		this.onContentChanged();
 	}
 	
 	@Override
