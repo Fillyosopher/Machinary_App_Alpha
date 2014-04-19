@@ -15,7 +15,7 @@ public class MachineActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_machine);
         
-        TextView text = (TextView) findViewById(R.id.MAedittext1);
+        TextView text = (TextView) findViewById(R.id.MAtitle);
         text.setText("Set text properly");
 
         Button backButton = (Button) findViewById(R.id.MAbackbutton);

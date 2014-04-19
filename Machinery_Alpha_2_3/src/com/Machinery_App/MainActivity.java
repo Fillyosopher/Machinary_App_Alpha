@@ -68,9 +68,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		listNames.add("Buttons");
 		listList.add(new List2(1,"Buttons","nope")); 
 		
-	    Log.i(LOG_TAG, "Starting Horizontal Adapter.");
-		mHorListView.setAdapter( new MachineAdapter( this, listNames, listList, datasource) );
-		Log.i(LOG_TAG, "Finished initializing hor adapter.");
+		//Set 
+	    mHorListView.setAdapter( new MachineAdapter( this, listNames, listList, datasource) );
 		
 		mHorListView.setHeaderDividersEnabled( true );
 		mHorListView.setFooterDividersEnabled( true );

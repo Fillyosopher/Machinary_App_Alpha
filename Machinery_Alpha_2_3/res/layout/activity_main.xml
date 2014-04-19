@@ -17,31 +17,64 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/switchview"
+        android:layout_toLeftOf="@+id/nameOrder"
         android:focusable="true"
         android:hint="@string/search"
         android:inputType="text" />
+
+    <Button
+        android:id="@+id/nameOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/edittext"
+        android:layout_toLeftOf="@+id/greaseOrder"
+        android:layout_alignParentTop="true"
+        android:minWidth="20dp"
+        android:minHeight="20dp" 
+        android:text="N" />
     
     <Button
-        android:id="@+id/switchview"
+        android:id="@+id/greaseOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/edittext"
+        android:layout_toLeftOf="@+id/maintenanceOrder"
+        android:layout_alignParentTop="true"
+        android:minWidth="20dp"
+        android:minHeight="20dp" 
+        android:text="G" />
+    
+   	<Button
+        android:id="@+id/maintenanceOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/edittext"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Hit me!" />
+        android:minWidth="20dp"
+        android:minHeight="20dp" 
+        android:text="M" />
 	
      <it.sephiroth.android.library.widget.HListView
          android:id="@+id/hListView1"
          android:layout_width="match_parent"
          android:layout_height="0dip"
-         android:background="#11000000"
-         android:paddingBottom="20dip"
-         android:paddingTop="20dip"
-         android:layout_alignParentBottom="true"
+         android:layout_above="@+id/switchview"
          android:layout_alignParentLeft="true"
          android:layout_alignParentRight="true"
          android:layout_below="@id/edittext"
-         android:focusable="false" />
-
+         android:background="#11000000"
+         android:focusable="false"
+         android:paddingBottom="20dip"
+         android:paddingTop="20dip" />
+     
+    <Button
+        android:id="@+id/switchview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Hit me!" />
+    
 </RelativeLayout>
