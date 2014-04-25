@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:orientation="vertical"
+    android:background="@drawable/background" >
+    
+  <TextView
+      android:id="@+id/sortby"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentTop = "true"
+      android:text="Sort By:" />
+
+    <Spinner
+        android:id="@+id/dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_above="@+id/cancel"
+        android:layout_below="@+id/sortby"
+        android:layout_alignLeft="@+id/sortby"
+        android:spinnerMode="dialog"
+        android:text="Select category"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+     
+    <Button
+    	android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/dropdown"
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom ="true"
+        android:text="Cancel"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+</RelativeLayout>
