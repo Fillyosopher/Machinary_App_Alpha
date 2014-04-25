@@ -5,11 +5,15 @@ public class MachineTable extends DatabaseTable {
 
 	//CHANGE THESE IF CHANGED MACHINE CLASS
 	protected static final String[] COLUMN_NAMES = {	"Name", "List", "Model_Year", "Last_Grease",
-													"Last_Maintenance", "Color", "Filter_Info"};
-	protected static final String[] COLUMN_TYPES = {	"text not null", "integer", "integer", "integer",
-													"integer", "text", "text"};
+													"Last_Maintenance", "Consumables", "ServiceTableName",
+													"Color"};
+	protected static final String[] COLUMN_TYPES = {	"text not null", "integer", "integer", "integer", 
+													"integer", "text", "text",
+													"text"};
+	
 	protected static final String[] ALL_COLUMNS = {	COLUMN_ID, "Name", "List", "Model_Year", "Last_Grease",
-													"Last_Maintenance", "Color", "Filter_Info"};
+													"Last_Maintenance", "Consumables", "ServiceTableName",
+													"Color"};
 
 	public MachineTable(){
 		super(TABLE_NAME, COLUMN_NAMES, COLUMN_TYPES, ALL_COLUMNS);

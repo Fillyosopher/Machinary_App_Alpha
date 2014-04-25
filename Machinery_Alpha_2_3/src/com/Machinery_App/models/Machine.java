@@ -6,9 +6,11 @@ public class Machine{
 	private long 	id; 			//Required
 	private String 	name; 			//Required
 	private long 	list; 			//Required
-	private int 	year;
-	private int 	lastGrease;
-	private int 	lastMaintenance;
+	private long 	year;
+	private long 	lastGrease;
+	private long 	lastMaintenance;
+	private String 	consumables;
+	private String	serviceTableName;
 	private String 	color;
 	// TODO implement these data types
 	private long 	picture;
@@ -20,28 +22,37 @@ public class Machine{
 	// Greasing Intervals
 	// Service Intervals
 	// Interval Settings
-	// Comments List
 	
-	public Machine(long id, String name, long list, int year, int lastGrease, int lastMaintenance, String color) {
+	//Complete constructors
+	public Machine(long id, String name, long list, long year, long lastGrease, long lastMaintenance, String consumables, String serviceTableName, String color) {
 		this.id = id;
 		this.name = name;
 		this.list = list;
 		this.year = year;
 		this.lastGrease = lastGrease;
-		this.lastMaintenance = lastMaintenance;
+		this.lastMaintenance = lastMaintenance;		
+		this.consumables = consumables;
+		this.serviceTableName = serviceTableName;
 		this.color = color;
 	}
-
+	
+	//Prefered constructor
 	public Machine(long id, String name, long list) {
 		this.id = id;
 		this.name = name;
 		this.list = list;
+		this.year = 0;
+		this.lastGrease = 0;
+		this.lastMaintenance = 0;
+		this.color = "white";
+		this.consumables = "";
+		this.serviceTableName = "";
 	}
 	
 	public Machine() {
 		this.name = "New Card";
 	}
-
+	
 	public long getId() {
 		return id;
 	}
@@ -106,6 +117,22 @@ public class Machine{
 		this.lastMaintenance = lastMaintenance;
 	}
 	
+	public String getConsumables() {
+		return consumables;
+	}
+
+	public void setConsumables(String consumables) {
+		this.consumables = consumables;
+	}
+	
+	public String getServiceTableName() {
+		return serviceTableName;
+	}
+
+	public void setServiceTableName(String tableName) {
+		this.serviceTableName = tableName;
+	}
+	
 	public String getColor() {
 		return color;
 	}
@@ -124,7 +151,5 @@ public class Machine{
 	public String toString() {
 		return name;
 	}*/
-	
-	// TODO static function machine to cursor
 	
 }

@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
     
     <TextView
-        android:id="@+id/MAtitle"
+        android:id="@+id/Mtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -16,42 +16,42 @@
         android:hint="Model Name Error" />
 
     <TextView
-        android:id="@+id/MAinfo"
+        android:id="@+id/Minfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:hint="Purchase, Year, Grease, Service Error"
-        android:layout_below="@id/MAtitle"
+        android:layout_below="@id/Mtitle"
         android:textAppearance="?android:attr/textAppearanceSmall" 
         android:focusable="true" />
     
     <TextView
-        android:id="@+id/MAconsumables"
+        android:id="@+id/Mconsumables"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:hint="Consumables Error"
-        android:layout_below="@id/MAinfo"
+        android:layout_below="@id/Minfo"
         android:textAppearance="?android:attr/textAppearanceSmall" 
         android:focusable="true" />    
 
     <TextView
-        android:id="@+id/MAmaintenancetag"
+        android:id="@+id/Mmaintenance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Maintenance History"
         android:gravity="center"
-        android:layout_below="@id/MAconsumables"
+        android:layout_below="@id/Mconsumables"
         android:textAppearance="?android:attr/textAppearanceSmall" 
         android:focusable="true" />   
     
 	<ListView
-        android:id="@+id/MAlistview"
+        android:id="@+id/Mlistview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:layout_below="@id/MAmaintenancetag"
+        android:layout_below="@id/Mmaintenance"
         android:layout_above="@+id/MAnote"
         android:focusable="false"
         android:layout_alignParentRight="true"
@@ -59,7 +59,7 @@
     </ListView>	    
 
     <Button
-        android:id="@+id/MAnote"
+        android:id="@+id/MbtnNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -68,29 +68,29 @@
         android:text="Note" />
     
     <Button
-        android:id="@+id/MAservice"
+        android:id="@+id/MbtnGrease"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MAnote"
+        android:layout_toRightOf="@id/MbtnNote"
         android:layout_alignParentBottom="true"
         android:textAppearance="?android:attr/textAppearanceSmall" 
         android:text="Service" />
     
 
     <Button
-        android:id="@+id/MAmaintenance"
+        android:id="@+id/MbtnMaintenance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MAservice"
+        android:layout_toRightOf="@id/MbtnGrease"
         android:layout_alignParentBottom="true"
         android:textAppearance="?android:attr/textAppearanceSmall" 
         android:text="Maintenance" />
     
 	<Button
-        android:id="@+id/MAbackbutton"
+        android:id="@+id/MbtnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MAmaintenance"
+        android:layout_toRightOf="@id/MbtnMaintenance"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:textAppearance="?android:attr/textAppearanceSmall" 

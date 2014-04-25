@@ -10,8 +10,7 @@ public class CoreSQLiteHelper extends SQLiteOpenHelper {
 	private static final String LOG_TAG = "CoreSQLiteHelper";
 	
 	private static final String DATABASE_NAME = "OpenATKmachine.db";
-	private static final int DATABASE_VERSION = 30;
-	boolean update_flag = false;
+	private static final int DATABASE_VERSION = 38;
 	
 	private static DatabaseTable[] tables = {new MachineTable(), new ListTable()};
 	
@@ -43,5 +42,21 @@ public class CoreSQLiteHelper extends SQLiteOpenHelper {
 			arg0.execSQL("DROP TABLE IF EXISTS " + tables[i].TABLE_NAME);
 		}
 		onCreate(arg0);
+	}
+	
+	public void CreateServiceTable(SQLiteDatabase arg0, long tableName){
+		DatabaseTable table = new ServiceTable(tableName);
+		String DATABASE_CREATE = "create table " + table.TABLE_NAME + "(" + DatabaseTable.COLUMN_ID + " integer primary key autoincrement";
+		for (int j=0; j<table.COLUMN_NUMBER; j++){
+			DATABASE_CREATE += ", " + ServiceTable.COLUMN_NAMES[j];
+			DATABASE_CREATE += " " + ServiceTable.COLUMN_TYPES[j];
+		}
+		DATABASE_CREATE += ");";
+		
+		arg0.execSQL(DATABASE_CREATE);
+	}
+	
+	public void RemoveServiceTable(SQLiteDatabase arg0, String tableName){
+		arg0.execSQL("DROP TABLE IF EXISTS " + tableName);
 	}
 }
