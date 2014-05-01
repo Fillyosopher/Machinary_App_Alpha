@@ -42,7 +42,7 @@ public class MachineActivity extends Activity {
 		Button maintenanceB = (Button) findViewById(R.id.MbtnMaintenance);
 		Button backB = (Button) findViewById(R.id.MbtnBack);
 
-		//Getting Machine infomation from passed Bundle
+		//Getting Machine information from passed Bundle
 		Intent i = getIntent();
 		id = i.getLongExtra("id", 0);
 		name = i.getStringExtra("name");

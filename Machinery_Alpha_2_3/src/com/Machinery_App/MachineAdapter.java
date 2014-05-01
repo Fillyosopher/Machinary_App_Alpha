@@ -5,17 +5,22 @@ import java.util.List;
 
 import com.Machinery_App.R;
 import com.Machinery_App.db.CoreDataSource;
+import com.Machinery_App.db.ListTable;
+import com.Machinery_App.db.MachineTable;
 import com.Machinery_App.models.List2;
 import com.Machinery_App.models.Machine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,6 +51,19 @@ public class MachineAdapter extends ArrayAdapter<String> {
 		this.objects = objects;
 		mInflater = LayoutInflater.from( context );
 		datasource = database;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		hVerAdapters.clear();
+		for (int i=0; i<hVerListViews.size();i++){
+			List<String> properCards = new ArrayList<String>();
+			properCards = datasource.getMachineNamesFromList(hLists.get(i));
+			hVerAdapters.add(new VerAdapter(getContext(), properCards));
+			// must be reset on new data
+			hVerListViews.get(i).setAdapter( hVerAdapters.get(i) );
+		}
 	}
 
 	@Override
@@ -83,12 +101,14 @@ public class MachineAdapter extends ArrayAdapter<String> {
 			int i = Integer.parseInt(tag.toString().replace("tag",""));
 			Log.i(LOG_TAG, "add/rem card button clicked");
 			if(i % 2 == 1){
+				//addGroup(i / 2, v);
 				Log.i(LOG_TAG, "rem card button clicked");
 				Machine deleteme = datasource.getMachinesFromList(datasource.getList((i-1)/2+1)).get(0);
 				datasource.deleteMachine(deleteme);
 				hVerAdapters.get((i-1)/2).strings.remove(0);
 				hVerAdapters.get((i-1)/2).notifyDataSetChanged();
 			} else if (i % 2 == 0){
+				//removeGroup((i - 1) / 2);
 				Log.i(LOG_TAG, "add card button clicked");
 				datasource.addMachine(new Machine(0,"New Machine",i/2+1));
 				hVerAdapters.get(i/2).strings.add("New Machine");
@@ -104,6 +124,7 @@ public class MachineAdapter extends ArrayAdapter<String> {
 			Log.i(LOG_TAG, "add/rem list");
 			switch (v.getId()){
 			case R.id.button1add:
+				//addElements();
 				Log.i(LOG_TAG, "add list");
 				datasource.addList(new List2(0,"New List","Name"));
 				objects.add("New List");
@@ -111,6 +132,7 @@ public class MachineAdapter extends ArrayAdapter<String> {
 				notifyDataSetChanged();
 				break;
 			case R.id.button1rem:
+				//removeElements();
 				Log.i(LOG_TAG, "rem list");
 				List2 deleteme = datasource.getAllLists().get(0);
 				datasource.deleteList(deleteme);
@@ -122,6 +144,58 @@ public class MachineAdapter extends ArrayAdapter<String> {
 		}
 	};
 
+
+	private void removeGroup(int category) {
+		//CoreDataSource datasource =  MainActivity.this.datasource;
+		datasource.getReadableDatabase();
+		Log.w(LOG_TAG,"List delete id = " + datasource.getAllLists().get(0).getId());
+		String query = "SELECT * FROM "+MachineTable.TABLE_NAME+" WHERE "+datasource.helper.tables[0].COLUMN_NAMES[1]+ " = '"+datasource.getList(category + 1).getName()+"'"; 
+		int count = datasource.database.rawQuery(query,null).getCount();
+		Cursor cursor = datasource.database.rawQuery(query,null);
+		cursor.moveToLast();
+		if(datasource.database.rawQuery(query,null).getCount() != 0){
+			datasource.deleteMachine(datasource.cursor2Machine(cursor));
+			//data = datasource;
+			notifyDataSetChanged();
+		}
+		notifyDataSetChanged();	
+	}
+
+	public void addGroup(int category, View expview){
+		String Query = "SELECT * FROM "+ MachineTable.TABLE_NAME;
+		Cursor cursor = datasource.database.rawQuery(Query, null);
+
+		Machine nmach = new Machine((long)cursor.getCount() + 1, "New machine",(long)category + 1,(long)2014,(long)2014,(long)2014,"No info","","white");
+		datasource.addMachine(nmach);
+		//data = MainActivity.this.datasource;
+		notifyDataSetChanged();
+	}
+
+	private void addElements() {
+		String Query = "SELECT * FROM "+ ListTable.TABLE_NAME;
+		Cursor cursor = datasource.database.rawQuery(Query, null);
+		
+		datasource.addList(new List2((long)cursor.getCount() + 1,"New Machine Type","Name"));
+		//data = MainActivity.this.datasource;
+		objects.add("New List");
+		hLists.add(datasource.getLastList());
+		notifyDataSetChanged();
+	}
+
+
+	private void removeElements() {
+		//CoreDataSource datasource = MainActivity.this.datasource;
+		Cursor cursor = datasource.database.rawQuery("SELECT * FROM "+ ListTable.TABLE_NAME, null);
+		int count  = cursor.getCount();
+		cursor.moveToLast();
+		if( count > 0 & count < 10 ) {
+			datasource.database.delete(ListTable.TABLE_NAME, datasource.helper.tables[1].COLUMN_NAMES[0] + " = ?" , new String[] { String.valueOf(cursor.getString(1)) });
+			//data = datasource;
+			objects.remove(hLists.size()-1);
+			hLists.remove(hLists.size()-1);
+			notifyDataSetChanged();
+		}
+	}
 
 	@Override
 	public View getView( int position, View convertView, ViewGroup parent ) {
@@ -179,6 +253,8 @@ public class MachineAdapter extends ArrayAdapter<String> {
 	private class VerAdapter extends ArrayAdapter<String> {
 		private static final String LOG_TAG = "VerAdapter";
 
+		SparseBooleanArray mSelectedItemsIds;
+
 		private List<String> strings = new ArrayList<String>();
 		public VerAdapter(Context context, List<String> objects) {
 			super(context, android.R.layout.simple_list_item_1, objects);
@@ -196,6 +272,8 @@ public class MachineAdapter extends ArrayAdapter<String> {
 			Log.i( LOG_TAG, "Position: " + String.valueOf( position ) + "  Object name: " + strings.get(position) );
 			TextView Name = (TextView) convertView.findViewById(android.R.id.text1);
 			Name.setText(strings.get(position));
+			
+			convertView.setOnClickListener(itemClickListener);
 			return convertView;
 		}
 
@@ -203,4 +281,42 @@ public class MachineAdapter extends ArrayAdapter<String> {
 		public boolean hasStableIds() {
 			return true;
 		}
+
+		public void toggleSelection(int position) {
+			selectView(position, !mSelectedItemsIds.get(position));
+		}
+
+		public void removeSelection() {
+			mSelectedItemsIds = new SparseBooleanArray();
+			notifyDataSetChanged();
+		}
+
+		public void selectView(int position, boolean value) {
+			if (value)
+				mSelectedItemsIds.put(position, value);
+			else
+				mSelectedItemsIds.delete(position);
+
+			notifyDataSetChanged();
+		}
+
+		public void notifyDataSetInvalidated()
+		{
+			super.notifyDataSetInvalidated();
+		}
+
+		public int getSelectedCount() {
+			return mSelectedItemsIds.size();
+		}
+
+		public SparseBooleanArray getSelectedIds() {
+			return mSelectedItemsIds;
+		}
+		
+		View.OnClickListener itemClickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			} 
+		};
 	}}

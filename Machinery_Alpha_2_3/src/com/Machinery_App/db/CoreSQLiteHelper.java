@@ -1,5 +1,10 @@
 package com.Machinery_App.db;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -12,7 +17,11 @@ public class CoreSQLiteHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "OpenATKmachine.db";
 	private static final int DATABASE_VERSION = 38;
 	
-	private static DatabaseTable[] tables = {new MachineTable(), new ListTable()};
+	private static SimpleDateFormat dateFormaterUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+	private static SimpleDateFormat dateFormaterLocal = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+	
+	//should be private, fix later, TODO
+	public static DatabaseTable[] tables = {new MachineTable(), new ListTable()};
 	
 	public CoreSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -58,5 +67,58 @@ public class CoreSQLiteHelper extends SQLiteOpenHelper {
 	
 	public void RemoveServiceTable(SQLiteDatabase arg0, String tableName){
 		arg0.execSQL("DROP TABLE IF EXISTS " + tableName);
+	}
+	
+	/*
+	 * Takes in a date and returns it in a string format
+	 */
+	public static String dateToStringUTC(Date date) {
+		if(date == null){
+			return null;
+		}
+		return CoreSQLiteHelper.dateFormaterUTC.format(date);
+	}
+
+	/*
+	 * Takes in a string formated by dateFormat() and returns the
+	 * original date.
+	 */
+	public static Date stringToDateUTC(String date) {
+		if(date == null){
+			return null;
+		}
+		Date d;
+		try {
+			d = CoreSQLiteHelper.dateFormaterUTC.parse(date);
+		} catch (ParseException e) {
+			d = new Date(0);
+		}
+		return d;
+	}
+	/*
+	 * Takes in a date and returns it in a string format
+	 */
+	public static String dateToStringLocal(Date date) {
+		if(date == null){
+			return null;
+		}
+		return CoreSQLiteHelper.dateFormaterLocal.format(date);
+	}
+
+	/*
+	 * Takes in a string formated by dateFormat() and returns the
+	 * original date.
+	 */
+	public static Date stringToDateLocal(String date) {
+		if(date == null){
+			return null;
+		}
+		Date d;
+		try {
+			d = CoreSQLiteHelper.dateFormaterLocal.parse(date);
+		} catch (ParseException e) {
+			d = new Date(0);
+		}
+		return d;
 	}
 }

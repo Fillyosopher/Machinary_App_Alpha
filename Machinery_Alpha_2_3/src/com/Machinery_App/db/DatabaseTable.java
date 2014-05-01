@@ -4,7 +4,8 @@ public class DatabaseTable {
 	protected String TABLE_NAME;
 	public static final String COLUMN_ID = "_id";
 
-	protected String[] COLUMN_NAMES;
+	//should be private, fix later, TODO
+	public String[] COLUMN_NAMES;
 	protected String[] COLUMN_TYPES;
 	protected int COLUMN_NUMBER;
 	

@@ -17,11 +17,14 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
 
 @TargetApi(11)
 public class MainActivity extends Activity implements OnClickListener, OnItemClickListener {
@@ -30,11 +33,18 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 
 	//Main View Declarations of layout/activity_main
 	EditText searchEditText;
-	Button searchButton;
+	
+	Button sortbyMachine;
+	Button sortbyGrease;
+	Button sortbyMaintenance;
+	
 	HListView mHorListView;
+	
+	MachineAdapter horAdapter;
 
 	//SQLite
-	private CoreDataSource datasource;
+	//this should be private, fix later, TODO
+	CoreDataSource datasource;
 
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
@@ -47,20 +57,30 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		Button btnNextScreen = (Button) findViewById(R.id.switchview);
 		btnNextScreen.setOnClickListener(switchviewListener);
 		
+		sortbyMachine = (Button)findViewById(R.id.nameOrder);
+		sortbyGrease = (Button)findViewById(R.id.greaseOrder);
+		sortbyMaintenance = (Button)findViewById(R.id.maintenanceOrder);
+		sortbyMachine.setOnClickListener(sortbyNameListener);
+		sortbyGrease.setOnClickListener(sortbyGreaseListener);
+		sortbyMaintenance.setOnClickListener(sortbyMaintenanceListener);
+		
 		// HorListView initial populating
 		List<List2> listList = datasource.getAllLists();
 		List<String> listNames = datasource.getListNames();
 		
 		// This is to add the column buttons at the end of the horizontal list
 		listNames.add("Buttons");
-		listList.add(new List2(1,"Buttons","nope")); 
+		listList.add(new List2(1,"Buttons","Name")); 
 		
 		//Start the Main ListView
-		mHorListView.setAdapter( new MachineAdapter( this, listNames, listList, datasource) );
+		horAdapter = new MachineAdapter( this, listNames, listList, datasource);
+		mHorListView.setAdapter( horAdapter );
 		
 		mHorListView.setHeaderDividersEnabled( true );
 		mHorListView.setFooterDividersEnabled( true );
 		mHorListView.setOnItemClickListener( this );
+		
+		searchEditText.addTextChangedListener(watcher);
 	}
 
 	@Override
@@ -68,6 +88,9 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		super.onContentChanged();
 		mHorListView = (HListView) findViewById( R.id.hListView1 );
 		searchEditText = (EditText) findViewById(R.id.edittext);
+		sortbyMachine = (Button)findViewById(R.id.nameOrder);
+		sortbyGrease = (Button)findViewById(R.id.greaseOrder);
+		sortbyMaintenance = (Button)findViewById(R.id.maintenanceOrder);
 	}
 
 	@Override
@@ -80,6 +103,36 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		Log.i( LOG_TAG, "onItemClick: " + position );
 	}
 
+	protected OnClickListener sortbyGreaseListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View arg0) {
+			sortbyGrease.setPressed(true);
+			sortbyMaintenance.setPressed(false);
+			sortbyMachine.setPressed(false);
+			//datasource.database.execSQL("UPDATE +"+MachineTable.TABLE_NAME+" ORDER BY "+MachineTable.COLUMN_NAMES[0]);
+		}//onClick
+	};
+	
+	protected OnClickListener sortbyNameListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View arg0) {
+			sortbyGrease.setPressed(false);
+			sortbyMaintenance.setPressed(false);
+			sortbyMachine.setPressed(true);
+			//datasource.database.execSQL("UPDATE +"+MachineTable.TABLE_NAME+" ORDER BY "+MachineTable.COLUMN_NAMES[0]);
+		}//onClick
+	};
+	
+	protected OnClickListener sortbyMaintenanceListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View arg0) {
+			sortbyGrease.setPressed(false);
+			sortbyMaintenance.setPressed(true);
+			sortbyMachine.setPressed(false);
+			//datasource.database.execSQL("UPDATE +"+MachineTable.TABLE_NAME+" ORDER BY "+MachineTable.COLUMN_NAMES[0]);
+		}//onClick
+	};
+	
 	protected OnClickListener switchviewListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View arg0) {
@@ -123,4 +176,22 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 			}
 		}
 	}//onActivityResult
+	
+	TextWatcher watcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence cs, int arg1, int arg2,int arg3) {
+        	MainActivity.this.horAdapter.getFilter().filter(cs.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1,
+                int arg2, int arg3) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+        	MainActivity.this.horAdapter.getFilter().filter(arg0.toString());
+        }
+	};
 }

@@ -19,8 +19,11 @@ public class CoreDataSource {
 	private static final String LOG_TAG = "CoreDataSource";
 
 	// Database fields
-	private SQLiteDatabase database;
-	private CoreSQLiteHelper helper;
+	// this should be private, fix later, TODO
+	public CoreSQLiteHelper helper;
+	
+	//this should be private, fix later, TODO
+	public SQLiteDatabase database;
 
 	public CoreDataSource(Context context) {
 		helper = new CoreSQLiteHelper(context);
@@ -32,7 +35,8 @@ public class CoreDataSource {
 		database = helper.getWritableDatabase();
 		return database;
 	}
-	private SQLiteDatabase getReadableDatabase(){
+	//TODO rewrite
+	public SQLiteDatabase getReadableDatabase(){
 		if (database != null) database.close();
 		database = helper.getWritableDatabase();
 		return database;
