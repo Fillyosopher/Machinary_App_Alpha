@@ -10,6 +10,7 @@ import com.OpenATK.machineryapp.models.MachineTypeList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,8 +65,8 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList>{
 						lists.get(position).getId(),currentDate,
 						"20XX", currentDate,
 						position, currentDate,
-						null, currentDate, 
-						null, currentDate, null,
+						null, null, 
+						null, null, null,
 						false, null
 						));
 				machineList = dbHelper.readMachinesOfList(lists.get(position));
@@ -97,9 +98,9 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList>{
 		            public void onItemClick(AdapterView<?> parent, View view, int position,
 		                    long id) {
 		            	Machine machine= (Machine) parent.getAdapter().getItem(position);
-		                Intent intent = new Intent(MachineTypeListArrayAdapter.this.context, MachineActivity.class);
-		                intent.putExtra(MACHINE, machine);
+		            	Intent intent = new Intent(MachineTypeListArrayAdapter.this.context, MachineActivity.class);
 		                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		                intent.putExtra(MACHINE, machine);
 		                context.startActivity(intent);
 		            }
 		        });

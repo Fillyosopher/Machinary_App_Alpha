@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/text_background_selector"
+    android:gravity="center_horizontal"
+    android:focusable="false" >
+ 
+    <!-- TextView maintenanceNameTextView -->
+    <!-- TextView maintenceNoteTextView -->
+    <!-- TextView maintenceDateTextView -->
+    
+    <TextView
+        android:id="@+id/maintenanceNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:focusable="true"
+        android:hint="Unnamed" />
+    
+    <TextView
+        android:id="@+id/maintenceNoteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/maintenanceNameTextView"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:focusable="true"/>
+    
+    <TextView
+        android:id="@+id/maintenceDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/maintenceNoteTextView"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:focusable="true"/>
+
+</RelativeLayout>

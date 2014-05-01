@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.OpenATK.machineryapp.models.Machine;
 import com.OpenATK.machineryapp.models.MachineTypeList;
+import com.OpenATK.machineryapp.models.Maintenance;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -141,7 +142,7 @@ public class TableMachine {
 				SQLiteDatabase database = dbHelper.getReadableDatabase();
 				// Find current MachineTypeList
 				Machine theMachine = null;
-				String where = TableMachine.COL_ID + " = " + Integer.toString(id) + " AND " + TableMachine.COL_DELETED + " = 0";
+				String where = TableMachine.COL_ID + " = " + Integer.toString(id);
 				Cursor cursor = database.query(TableMachine.TABLE_NAME,TableMachine.COLUMNS, where, null, null, null, null);
 				if (cursor.moveToFirst()) {
 					theMachine = TableMachine.cursorToMachine(cursor);
@@ -198,6 +199,10 @@ public class TableMachine {
 				
 				machine.setMaintenanceTableName("maintenance" + machine.getId().toString());
 				TableMaintenance.onCreate(database, machine);
+				Date currentDate = new Date(System.currentTimeMillis());
+				TableMaintenance.updateMaintenance(dbHelper, machine, new Maintenance(
+						null, null, "", currentDate, "Machine Created", currentDate, false, null
+						));
 			} else {
 				//UPDATE
 				//If have id, lookup by that, it's fastest

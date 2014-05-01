@@ -57,7 +57,6 @@ public class MachineArrayAdapter extends ArrayAdapter<Machine> {
 			holder.year.setText(machine.getYear());
 			holder.name.setText(machine.getName());
 			if(machine.getDateGreasedChanged() != null){
-				Log.d("MachineArrayAdapter","Greased Line Displayed: " + machine.getDateGreasedChanged());
 				holder.line1.setText(machine.getGreased());
 			} else {
 				holder.line1.setVisibility(View.GONE);

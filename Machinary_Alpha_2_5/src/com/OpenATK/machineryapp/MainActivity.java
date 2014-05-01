@@ -36,8 +36,6 @@ public class MainActivity extends Activity {
 	public static int STATE_SORTBY_GREASED = 1;
 	public static int STATE_SORTBY_MAINTENANCE = 2;
 	
-	public final static String MACHINE = "com.OpenATK.machineryapp.MACHINE";
-
 	private int state;
 		
 	private EditText searchEditText = null;

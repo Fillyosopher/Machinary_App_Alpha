@@ -45,6 +45,7 @@ public class TableMaintenance {
 				      + COL_DELETED_CHANGED + " text"
 				      + ");";
 		  database.execSQL(DATABASE_CREATE);
+		  Log.d("TableMaintenance","Created new Table: " + tableName);
 		}
 
 		//TODO handle upgrade

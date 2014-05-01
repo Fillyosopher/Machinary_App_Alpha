@@ -37,10 +37,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase database) {
 		TableMachineTypeList.onCreate(database);
 		TableMachine.onCreate(database);
-		List<Machine> list = readMachines();
+		/*List<Machine> list = readMachines();
 		for (int i = 0; i<list.size();i++){
 			TableMaintenance.onCreate(database, list.get(i));
-		}
+		}*/
 	}
 
 
@@ -48,11 +48,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 		TableMachineTypeList.onUpgrade(database, oldVersion, newVersion);
 		TableMachine.onUpgrade(database, oldVersion, newVersion);
-		List<Machine> list = readMachines();
+		/*List<Machine> list = readMachines();
 		for (int i = 0; i<list.size();i++){
 			TableMaintenance.onUpgrade(database, list.get(i), oldVersion, newVersion);
-		}
-		
+		}*/
 	}
 	
 	/*

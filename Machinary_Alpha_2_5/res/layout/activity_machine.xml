@@ -2,98 +2,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
     <TextView
         android:id="@+id/Mtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp"
+        android:hint="Model Name Error"
         android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:hint="Model Name Error" />
+        android:paddingTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
+    <EditText
         android:id="@+id/Minfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:hint="Purchase, Year, Grease, Service Error"
         android:layout_below="@id/Mtitle"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:focusable="true" />
-    
-    <TextView
+        android:focusable="true"
+        android:hint="Purchase, Year, Grease, Service Error"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
         android:id="@+id/Mconsumables"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:hint="Consumables Error"
         android:layout_below="@id/Minfo"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:focusable="true" />    
+        android:focusable="true"
+        android:hint="Consumables Error"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/Mmaintenance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Maintenance History"
-        android:gravity="center"
         android:layout_below="@id/Mconsumables"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:focusable="true" />   
-    
-	<ListView
-        android:id="@+id/Mlistview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_below="@id/Mmaintenance"
-        android:layout_above="@+id/MAnote"
-        android:focusable="false"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true" >
-    </ListView>	    
+        android:focusable="true"
+        android:gravity="center"
+        android:text="Maintenance History"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Button
-        android:id="@+id/MbtnNote"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/Mlistview"
+        android:layout_width="400dip"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:text="Note" />
-    
-    <Button
-        android:id="@+id/MbtnGrease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MbtnNote"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:text="Service" />
-    
+        android:layout_above="@+id/MbtnNote"
+        android:layout_below="@id/Mmaintenance"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:focusable="false" >
+    </ListView>
+
 
     <Button
         android:id="@+id/MbtnMaintenance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MbtnGrease"
         android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:text="Maintenance" />
-    
-	<Button
+        android:layout_alignParentLeft="true"
+        android:text="Maintenance"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
         android:id="@+id/MbtnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MbtnMaintenance"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:text="Back" />
-	
+        android:layout_alignParentRight="true"
+        android:text="Back"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>
