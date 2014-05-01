@@ -48,8 +48,6 @@ public class MachineArrayAdapter extends ArrayAdapter<Machine> {
 		if(machines == null){
 			Log.e("MachineArrayAdapter", "machines null");
 		} else {
-			Log.d("MachineArrayAdapter", "Length:" + Integer.toString(machines.size()));
-			Log.d("MachineArrayAdapter", "Pos:" + Integer.toString(position));
 		}
 
 		if(holder == null){

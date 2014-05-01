@@ -176,4 +176,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		dbHelper.close();
 		return machine;
 	}
+
+	public List<Machine> readMachinesOfListOrdered(MachineTypeList list, int order, String searched){
+		return DatabaseHelper.readMachinesOfListOrdered(this, list, order, searched);
+	}
+	public static List<Machine> readMachinesOfListOrdered(DatabaseHelper dbHelper, MachineTypeList list, int order, String searched) {
+		List<Machine> machine = new ArrayList<Machine>();
+		Machine addmachine;
+		SQLiteDatabase database = dbHelper.getReadableDatabase();
+
+		String orderBy;
+		switch(order){
+		case 0:
+			orderBy = TableMachine.COL_NAME;
+			break;
+		case 1:
+			orderBy = TableMachine.COL_GREASED_CHANGED;
+			break;
+		case 2:
+			orderBy = TableMachine.COL_MAINTENANCE_CHANGED;
+			break;	
+		default:
+			orderBy = TableMachine.COL_NAME;	
+		}
+				
+		String selectQuery = null;
+		if (searched.length() == 0) {
+			selectQuery = 
+					"SELECT  * FROM " + TableMachine.TABLE_NAME + 
+					" WHERE " + TableMachine.COL_LIST + " = '" + String.valueOf(list.getId()) + "'" +
+					" ORDER BY " + orderBy + " ASC";
+		} else {
+			selectQuery = 
+					"SELECT  * FROM " + TableMachine.TABLE_NAME + 
+					" WHERE " + TableMachine.COL_LIST + " = '" + String.valueOf(list.getId()) + "'" +
+					" AND " + TableMachine.COL_NAME + " LIKE '" + searched + "%" + "'" +
+					" ORDER BY " + orderBy + " ASC";
+		}
+		
+		Cursor cursor = database.rawQuery(selectQuery, null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				addmachine = TableMachine.cursorToMachine(cursor);
+				if (addmachine.getDeleted()==false){
+					machine.add(addmachine);
+				}
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+
+		database.close();
+		dbHelper.close();
+		return machine;
+	}
 }

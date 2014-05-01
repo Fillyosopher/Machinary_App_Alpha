@@ -22,43 +22,39 @@ import android.widget.TextView;
 public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 	public static final Integer POSITION_TAG = 0;
 	public static final Integer LISTVIEW_TAG = 1;
-	
+
 	private final Context context;
 	private List<MachineTypeList> lists = null;
 	private int resId;
 	private int innerResId;
+	private int nullResId = R.layout.empty_col_item;
 	private DatabaseHelper dbHelper = null;
-	
-	public MachineTypeListArrayAdapter(Context context, int layoutResourceId, List<MachineTypeList> data, int innerLayoutResourceId, DatabaseHelper dbHelper) {
+	private int order;
+	private String searched;
+
+
+	public MachineTypeListArrayAdapter(Context context, int layoutResourceId, List<MachineTypeList> data, int innerLayoutResourceId, DatabaseHelper dbHelper, int order, String searched) {
 		super(context, layoutResourceId, data);
 		this.resId = layoutResourceId;
 		this.context = context;
 		this.lists = data;
 		this.innerResId = innerLayoutResourceId;
 		this.dbHelper = dbHelper;
+		this.order = order;
+		this.searched = searched;
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View col = convertView;
 		Holder holder = null;
 		ButtonHolder bHolder = null;
+
+		boolean emptyFlag = false;
 		
 		if(col == null){
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			col = inflater.inflate(resId, parent, false);
-
-			holder = new Holder();
-			holder.txtTitle = (TextView) col.findViewById(R.id.columnTitleTextView);
-			holder.innerList = (ListView) col.findViewById(R.id.innerMachineListView);
-			holder.buttonAddRow = (Button) col.findViewById(R.id.addRowButton);
-			holder.buttonRemoveRow = (Button) col.findViewById(R.id.removeRowButton);
-			
-			bHolder = new ButtonHolder();
-			bHolder.innerList = holder.innerList;
-			bHolder.position = position;
-		
 			List<Machine> machineList = dbHelper.readMachinesOfList(lists.get(position));
+
 			if (machineList.size() == 0){
 				Date currentDate = new Date(System.currentTimeMillis());
 				boolean added = TableMachine.updateMachine(dbHelper,new Machine(
@@ -76,13 +72,35 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 					Log.e("MachineTypeListArrayAdapter", "Machines List database error");
 				}
 			}
+
+			machineList = dbHelper.readMachinesOfListOrdered(lists.get(position),order,searched);
 			
-			holder.innerList.setAdapter(new MachineArrayAdapter(this.context,innerResId,machineList));	
+			holder = new Holder();
 			
-			holder.buttonAddRow.setOnClickListener(rowEditListener);
-			holder.buttonRemoveRow.setOnClickListener(rowEditListener);
-			holder.buttonAddRow.setTag(bHolder);
-			holder.buttonRemoveRow.setTag(bHolder);
+			if (machineList.size() != 0){
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				col = inflater.inflate(resId, parent, false);
+
+				holder.txtTitle = (TextView) col.findViewById(R.id.columnTitleTextView);
+				holder.innerList = (ListView) col.findViewById(R.id.innerMachineListView);
+				holder.buttonAddRow = (Button) col.findViewById(R.id.addRowButton);
+				holder.buttonRemoveRow = (Button) col.findViewById(R.id.removeRowButton);
+
+				bHolder = new ButtonHolder();
+				bHolder.innerList = holder.innerList;
+				bHolder.position = position;
+
+				holder.innerList.setAdapter(new MachineArrayAdapter(this.context,innerResId,machineList));	
+
+				holder.buttonAddRow.setOnClickListener(rowEditListener);
+				holder.buttonRemoveRow.setOnClickListener(rowEditListener);
+				holder.buttonAddRow.setTag(bHolder);
+				holder.buttonRemoveRow.setTag(bHolder);
+			} else {
+				emptyFlag = true;
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				col = inflater.inflate(nullResId, parent, false);
+			}
 			
 			col.setTag(holder);
 		} else {
@@ -99,26 +117,28 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 		if(holder == null){
 			Log.d("MachineTypeListArrayAdapter", "holder null");
 		} else {
-			MachineTypeList list = lists.get(position);
-			holder.txtTitle.setText(list.getName());
+			if(!emptyFlag){
+				MachineTypeList list = lists.get(position);
+				holder.txtTitle.setText(list.getName());
+			}
 		}
 		return col;
 	}
-	
+
 	static class Holder
-    {
-        TextView txtTitle;
-        ListView innerList;
-        Button buttonAddRow;
-        Button buttonRemoveRow;
-    }
-	
+	{
+		TextView txtTitle;
+		ListView innerList;
+		Button buttonAddRow;
+		Button buttonRemoveRow;
+	}
+
 	static class ButtonHolder
-    {
-        Integer position;
-        ListView innerList;
-    }
-	
+	{
+		Integer position;
+		ListView innerList;
+	}
+
 	protected OnClickListener rowEditListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {

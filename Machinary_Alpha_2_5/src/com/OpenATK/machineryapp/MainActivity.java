@@ -23,6 +23,8 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ToggleButton;
 
 @TargetApi(11)
 public class MainActivity extends Activity {
@@ -37,9 +39,9 @@ public class MainActivity extends Activity {
 	private DatabaseHelper dbHelper;
 	HListView OuterListView;
 	
-	Button orderByName;
-	Button orderByGrease;
-	Button orderByMaintenance;
+	ToggleButton orderByName;
+	ToggleButton orderByGrease;
+	ToggleButton orderByMaintenance;
 	
 	private List<MachineTypeList> typesList = new ArrayList<MachineTypeList>();
 	
@@ -65,38 +67,13 @@ public class MainActivity extends Activity {
 		}
 		
 		searchEditText = (EditText) this.findViewById(R.id.searchByEditText);
-		orderByName = (Button) this.findViewById(R.id.orderByNameButton);
-		orderByGrease = (Button) this.findViewById(R.id.orderByGreaseButton);		
-		orderByMaintenance = (Button) this.findViewById(R.id.orderByMaintenanceButton);		
+		orderByName = (ToggleButton) this.findViewById(R.id.orderByNameButton);
+		orderByGrease = (ToggleButton) this.findViewById(R.id.orderByGreaseButton);		
+		orderByMaintenance = (ToggleButton) this.findViewById(R.id.orderByMaintenanceButton);		
 		OuterListView = (HListView) this.findViewById(R.id.outerMachineListView);
 		Button addColumn = (Button) this.findViewById(R.id.addColumnButton);
 		Button removeColumn = (Button) this.findViewById(R.id.removeColumnButton);
-		
-		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus == false) {
-					InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				}
-			}
-		});
-		searchEditText.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void afterTextChanged(Editable s) {
-				//TODO
-				//if(fragmentListView != null) fragmentListView.search(s.toString());
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}			
-		});
-		
+				
 		orderByName.setOnClickListener(orderByListener);
 		orderByGrease.setOnClickListener(orderByListener);
 		orderByMaintenance.setOnClickListener(orderByListener);
@@ -112,9 +89,31 @@ public class MainActivity extends Activity {
 				Log.e("Main_Activity", "Types List database error");
 			}
 		}
-		OuterListView.setAdapter(new MachineTypeListArrayAdapter(
-				getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
-				));		
+		OuterListView.setAdapter(AdapterByState());		
+		
+		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus == false) {
+					InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				}
+			}
+		});
+		searchEditText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void afterTextChanged(Editable s) {
+				OuterListView.setAdapter(AdapterByState(s.toString()));
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}			
+		});
 		
 		addColumn.setOnClickListener(columnEditListener);
 		removeColumn.setOnClickListener(columnEditListener);
@@ -210,9 +209,7 @@ public class MainActivity extends Activity {
 					Log.w("Main Activity","Column Add Failed");
 				} else {
 					typesList = dbHelper.readLists();
-					OuterListView.setAdapter(new MachineTypeListArrayAdapter(
-							getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
-							));
+					OuterListView.setAdapter(AdapterByState());
 				}
 				break;
 			case R.id.removeColumnButton:
@@ -227,9 +224,7 @@ public class MainActivity extends Activity {
 					Log.w("Main Activity","Column Delete Failed");
 				} else {
 					typesList = dbHelper.readLists();
-					OuterListView.setAdapter(new MachineTypeListArrayAdapter(
-							getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
-							));
+					OuterListView.setAdapter(AdapterByState());
 				}
 				break;
 			}
@@ -256,22 +251,34 @@ public class MainActivity extends Activity {
 	private void setState(int newState) {
 		if(this.state != newState){
 			if(newState == STATE_SORTBY_NAME){
-				orderByName.setPressed(true);
-				orderByGrease.setPressed(false);
-				orderByMaintenance.setPressed(false);
-				
+				Log.d("MainActivity","Sortby to name");
+				orderByName.setChecked(true);
+				orderByGrease.setChecked(false);
+				orderByMaintenance.setChecked(false);
 			} else if(newState == STATE_SORTBY_GREASED){
-				orderByName.setPressed(false);
-				orderByGrease.setPressed(true);
-				orderByMaintenance.setPressed(false);
+				Log.d("MainActivity","Sortby to grease");
+				orderByName.setChecked(false);
+				orderByGrease.setChecked(true);
+				orderByMaintenance.setChecked(false);
 			} else if(newState == STATE_SORTBY_MAINTENANCE) {
-				orderByName.setPressed(false);
-				orderByGrease.setPressed(false);
-				orderByMaintenance.setPressed(true);
+				Log.d("MainActivity","Sortby to maintenance");
+				orderByName.setChecked(false);
+				orderByGrease.setChecked(false);
+				orderByMaintenance.setChecked(true);
 			}
 
 			this.state = newState;
-		}
-		
+			OuterListView.setAdapter(AdapterByState());
+		}	
+	}
+	
+	private MachineTypeListArrayAdapter AdapterByState() {
+		String s = searchEditText.getText().toString();
+		return AdapterByState(s);
+	}
+	private MachineTypeListArrayAdapter AdapterByState(String searched) {
+		return new MachineTypeListArrayAdapter(
+				getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper,state,searched
+				);
 	}
 }

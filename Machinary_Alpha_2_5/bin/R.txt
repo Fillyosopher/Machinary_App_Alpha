@@ -41,7 +41,8 @@ int id searchByEditText 0x7f040003
 int id year 0x7f04000e
 int layout activity_main 0x7f030000
 int layout column_item_1 0x7f030001
-int layout row_item_1 0x7f030002
+int layout empty_col_item 0x7f030002
+int layout row_item_1 0x7f030003
 int string app_name 0x7f060000
 int style AbsHListView 0x7f070002
 int style AppBaseTheme 0x7f070000
