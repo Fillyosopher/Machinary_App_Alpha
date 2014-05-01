@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 	private int state;
 		
 	private EditText searchEditText = null;
-	private DatabaseHelper dbHelper;
+	static DatabaseHelper dbHelper;
 	HListView OuterListView;
 	
 	ToggleButton orderByName;

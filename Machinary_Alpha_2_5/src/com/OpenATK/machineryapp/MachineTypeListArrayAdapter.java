@@ -100,7 +100,7 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList>{
 		            	Machine machine= (Machine) parent.getAdapter().getItem(position);
 		            	Intent intent = new Intent(MachineTypeListArrayAdapter.this.context, MachineActivity.class);
 		                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		                intent.putExtra(MACHINE, machine);
+		                intent.putExtra(MACHINE, machine.getId());
 		                context.startActivity(intent);
 		            }
 		        });

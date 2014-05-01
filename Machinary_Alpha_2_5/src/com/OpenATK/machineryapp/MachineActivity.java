@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.OpenATK.machineryapp.MainActivity;
 import com.OpenATK.machineryapp.R;
 import com.OpenATK.machineryapp.db.DatabaseHelper;
 import com.OpenATK.machineryapp.db.TableMachine;
+import com.OpenATK.machineryapp.db.TableMaintenance;
 import com.OpenATK.machineryapp.models.Machine;
 import com.OpenATK.machineryapp.models.Maintenance;
 
@@ -29,7 +31,7 @@ import android.widget.TextView;
 
 public class MachineActivity extends Activity {
 	public final static String MACHINE = "com.OpenATK.machineryapp.MACHINE";
-	
+
 	private DatabaseHelper dbHelper;
 	Machine machine;
 	List<Maintenance> maintenances = new ArrayList<Maintenance>();
@@ -40,22 +42,20 @@ public class MachineActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_machine);
 
 		//Getting View IDs
 		TextView titleT = (TextView) findViewById(R.id.Mtitle);
-		EditText infoT = (EditText) findViewById(R.id.Minfo);
 		EditText consumablesT = (EditText) findViewById(R.id.Mconsumables);
-		TextView maintenanceT = (TextView) findViewById(R.id.Mmaintenance);
 		ListView listview = (ListView) findViewById(R.id.Mlistview);
 		Button maintenanceB = (Button) findViewById(R.id.MbtnMaintenance);
 		Button backB = (Button) findViewById(R.id.MbtnBack);
-		
+
 		Intent i = getIntent();
-		machine = (Machine) i.getSerializableExtra(MACHINE);
-		//TODO
-		//dbHelper = DatabaseHelper();
+		Integer id = (Integer) i.getIntExtra(MACHINE,0);
+		dbHelper = MainActivity.dbHelper;
+		machine = TableMachine.FindMachineById(dbHelper, id);
 		
 		//Getting specific information from machine
 		Object greased;
@@ -66,13 +66,13 @@ public class MachineActivity extends Activity {
 		} else {
 			greased = machine.getDateGreasedChanged();
 		}
-		
+
 		if (machine.getDateMaintenanceChanged()==null) {
 			maintenance = "Never Serviced";
 		} else {
 			maintenance = machine.getDateMaintenanceChanged();
 		}
-		
+
 		if (machine.getMaintenance()==null) {
 			partInfo = "No Part Information Recorded";
 		} else {
@@ -81,26 +81,24 @@ public class MachineActivity extends Activity {
 
 		//Setting View Information
 		titleT.setText(machine.getName());
-		infoT.setText(
-						"Model Year: " + machine.getYear() + "\n" +
-						"Last Greased: " + greased.toString() + "\n" +
-						"Last Serviced: " + maintenance.toString()
-				);
 		consumablesT.setText(partInfo);
-		maintenanceT.setText("Maintenance List");
-		
-		machine.setMaintenanceTableName("maintenance" + machine.getId().toString());
-		if(machine.getMaintenanceTableName()!=null) {
+
+		maintenances = dbHelper.readMaintenancesOfMachine(machine);
+		if(maintenances.size()==0){
+			Log.w("MachineActivity","maintenances empty");
+			Date currentDate = new Date(System.currentTimeMillis());
+			TableMaintenance.updateMaintenance(dbHelper, machine, new Maintenance(
+					null, null, "New Machine", currentDate, "Maintenance List Started", currentDate, false, null
+					));
 			maintenances = dbHelper.readMaintenancesOfMachine(machine);
-		} else {
-			Log.e("MachineActivity","Machine " + machine.getName()+ " lacks a maintenance database: " + machine.getMaintenanceTableName());
 		}
-		listview.setAdapter(new MaintenanceArrayAdapter(this.context, R.layout.maintenance_item, maintenances));
+		Log.d("MachineActivity","maintenances has at least one object named" + maintenances.get(0).getName());
+		//listview.setAdapter(new MaintenanceArrayAdapter(context, R.layout.maintenance_item, maintenances));
 
 		//Setting Button Listeners
 		maintenanceB.setOnClickListener(onClickListener);
 		backB.setOnClickListener(onClickListener);
-		
+
 		consumablesT.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
