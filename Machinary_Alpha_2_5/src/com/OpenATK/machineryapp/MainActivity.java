@@ -3,31 +3,43 @@ package com.OpenATK.machineryapp;
 import it.sephiroth.android.library.widget.HListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.OpenATK.machineryapp.db.DatabaseHelper;
+import com.OpenATK.machineryapp.db.TableMachineTypeList;
 import com.OpenATK.machineryapp.models.MachineTypeList;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 @TargetApi(11)
 public class MainActivity extends Activity {
 	
+	public static int STATE_SORTBY_NAME = 0;
+	public static int STATE_SORTBY_GREASED = 1;
+	public static int STATE_SORTBY_MAINTENANCE = 2;
+
+	private int state;
+		
 	private EditText searchEditText = null;
 	private DatabaseHelper dbHelper;
+	HListView OuterListView;
+	
+	Button orderByName;
+	Button orderByGrease;
+	Button orderByMaintenance;
 	
 	private List<MachineTypeList> typesList = new ArrayList<MachineTypeList>();
 	
@@ -47,18 +59,19 @@ public class MainActivity extends Activity {
 		
 		if (savedInstanceState == null) {
 			// First incarnation of this activity.
+			setState(STATE_SORTBY_NAME);
 		} else {
 			// Reincarnated activity.
 		}
 		
-		HListView OuterListView = (HListView) this.findViewById(R.id.outerMachineListView);
-		typesList = dbHelper.readLists();
-		
-		OuterListView.setAdapter(new MachineTypeListArrayAdapter(
-				getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
-				));
-		
 		searchEditText = (EditText) this.findViewById(R.id.searchByEditText);
+		orderByName = (Button) this.findViewById(R.id.orderByNameButton);
+		orderByGrease = (Button) this.findViewById(R.id.orderByGreaseButton);		
+		orderByMaintenance = (Button) this.findViewById(R.id.orderByMaintenanceButton);		
+		OuterListView = (HListView) this.findViewById(R.id.outerMachineListView);
+		Button addColumn = (Button) this.findViewById(R.id.addColumnButton);
+		Button removeColumn = (Button) this.findViewById(R.id.removeColumnButton);
+		
 		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -84,10 +97,33 @@ public class MainActivity extends Activity {
 			}			
 		});
 		
+		orderByName.setOnClickListener(orderByListener);
+		orderByGrease.setOnClickListener(orderByListener);
+		orderByMaintenance.setOnClickListener(orderByListener);
+		
+		typesList = dbHelper.readLists();
+		if (typesList.size() == 0){
+			Date currentDate = new Date(System.currentTimeMillis());
+			boolean added = TableMachineTypeList.updateMachineTypeList(dbHelper,new MachineTypeList(
+					null,null,"New List",currentDate,1,currentDate,false,null
+					));
+			typesList = dbHelper.readLists();
+			if (added == false || typesList.size() == 0){
+				Log.e("Main_Activity", "Types List database error");
+			}
+		}
+		OuterListView.setAdapter(new MachineTypeListArrayAdapter(
+				getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
+				));		
+		
+		addColumn.setOnClickListener(columnEditListener);
+		removeColumn.setOnClickListener(columnEditListener);
+		
 		OuterListView.setHeaderDividersEnabled( true );
 		OuterListView.setFooterDividersEnabled( true );
 		//OuterListView.setOnItemClickListener( this );
 	}
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
@@ -136,6 +172,7 @@ public class MainActivity extends Activity {
 		 * It should do whatever it does very quickly, because the next activity will not be resumed until it returns.
 		 * Followed either by onResume() if the activity returns back to the front, or by onStop() if it becomes invisible to the user.
 		 */
+		// TODO save state and restore state
 	}
 	@Override
 	protected void onStop() {
@@ -157,5 +194,84 @@ public class MainActivity extends Activity {
 		 * It could be called either because the activity is finishing (someone called finish() on it), or because the system is temporarily destroying this instance of the activity to save space.
 		 * You can distinguish between these two scenarios with the isFinishing() method.
 		 */
+	}
+	
+	protected OnClickListener columnEditListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Date currentDate;
+			switch (v.getId()){
+			case R.id.addColumnButton:
+				currentDate = new Date(System.currentTimeMillis());
+				boolean added = TableMachineTypeList.updateMachineTypeList(dbHelper,new MachineTypeList(
+						null,null,"New List",currentDate,1,currentDate,false,null
+						));
+				if (!added){
+					Log.w("Main Activity","Column Add Failed");
+				} else {
+					typesList = dbHelper.readLists();
+					OuterListView.setAdapter(new MachineTypeListArrayAdapter(
+							getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
+							));
+				}
+				break;
+			case R.id.removeColumnButton:
+				currentDate = new Date(System.currentTimeMillis());
+				//TODO
+				typesList = dbHelper.readLists();
+				MachineTypeList removelist = typesList.get(typesList.size()-1);
+				removelist.setDeleted(true);
+				removelist.setDateDeleted(currentDate);
+				boolean removed = TableMachineTypeList.updateMachineTypeList(dbHelper,removelist);
+				if (!removed){
+					Log.w("Main Activity","Column Delete Failed");
+				} else {
+					typesList = dbHelper.readLists();
+					OuterListView.setAdapter(new MachineTypeListArrayAdapter(
+							getBaseContext(),R.layout.column_item_1,typesList,R.layout.row_item_1,dbHelper
+							));
+				}
+				break;
+			}
+		}//onClick
+	};//columnEditListener
+	
+	protected OnClickListener orderByListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()){
+			case R.id.orderByNameButton:
+				setState(STATE_SORTBY_NAME);
+				break;
+			case R.id.orderByGreaseButton:
+				setState(STATE_SORTBY_GREASED);
+				break;
+			case R.id.orderByMaintenanceButton:
+				setState(STATE_SORTBY_MAINTENANCE);
+				break;
+			}
+		}//onClick
+	};//sortByListener
+	
+	private void setState(int newState) {
+		if(this.state != newState){
+			if(newState == STATE_SORTBY_NAME){
+				orderByName.setPressed(true);
+				orderByGrease.setPressed(false);
+				orderByMaintenance.setPressed(false);
+				
+			} else if(newState == STATE_SORTBY_GREASED){
+				orderByName.setPressed(false);
+				orderByGrease.setPressed(true);
+				orderByMaintenance.setPressed(false);
+			} else if(newState == STATE_SORTBY_MAINTENANCE) {
+				orderByName.setPressed(false);
+				orderByGrease.setPressed(false);
+				orderByMaintenance.setPressed(true);
+			}
+
+			this.state = newState;
+		}
+		
 	}
 }

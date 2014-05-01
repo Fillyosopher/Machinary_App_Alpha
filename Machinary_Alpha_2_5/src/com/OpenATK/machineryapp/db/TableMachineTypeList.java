@@ -132,7 +132,7 @@ public class TableMachineTypeList {
 
 			boolean ret = false;
 			SQLiteDatabase database = dbHelper.getWritableDatabase();
-
+			
 			ContentValues values = new ContentValues();
 			if(list.getRemote_id() != null) values.put(TableMachineTypeList.COL_REMOTE_ID, list.getRemote_id());
 
@@ -143,7 +143,7 @@ public class TableMachineTypeList {
 			if(list.getDateOrderChanged() != null) values.put(TableMachineTypeList.COL_ORDER_CHANGED, DatabaseHelper.dateToStringUTC(list.getDateOrderChanged()));
 
 			if(list.getDeleted() != null) values.put(TableMachineTypeList.COL_DELETED, (list.getDeleted() == false ? 0 : 1));
-			if(list.getDateDeleted() != null) values.put(TableMachineTypeList.COL_DELETED_CHANGED, DatabaseHelper.dateToStringUTC(list.getDateNameChanged()));
+			if(list.getDateDeleted() != null) values.put(TableMachineTypeList.COL_DELETED_CHANGED, DatabaseHelper.dateToStringUTC(list.getDateDeleted()));
 
 
 			if(list.getId() == null && (list.getRemote_id() == null || list.getRemote_id().length() == 0)) {

@@ -3,10 +3,7 @@ package com.OpenATK.machineryapp.models;
 import java.util.Date;
 
 public class MachineTypeList {
-	
-	public static Integer STATUS_NOT_PLANNED = 0;
-	public static Integer STATUS_PLANNED = 1;
-	
+		
 	private Integer id = null;
 	private String remote_id = null;
 
