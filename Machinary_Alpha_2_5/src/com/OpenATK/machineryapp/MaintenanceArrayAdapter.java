@@ -1,5 +1,6 @@
 package com.OpenATK.machineryapp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.OpenATK.machineryapp.MachineArrayAdapter.Holder;

@@ -34,8 +34,9 @@ public class TableMachine {
 
 
 		public static String[] COLUMNS = { COL_ID, COL_REMOTE_ID, COL_NAME, 
-			COL_NAME_CHANGED, COL_ORDER, COL_ORDER_CHANGED, COL_DELETED, 
-			COL_DELETED_CHANGED };
+			COL_NAME_CHANGED, COL_LIST, COL_LIST_CHANGED, COL_YEAR, COL_YEAR_CHANGED, COL_ORDER,
+			COL_ORDER_CHANGED, COL_GREASED, COL_GREASED_CHANGED, COL_MAINTENANCE, COL_MAINTENANCE_CHANGED, COL_MAINTENANCE_TABLE_NAME,
+			COL_DELETED, COL_DELETED_CHANGED };
 
 		// Database creation SQL statement
 		private static final String DATABASE_CREATE = "create table " 
@@ -201,8 +202,10 @@ public class TableMachine {
 				TableMaintenance.onCreate(database, machine);
 				Date currentDate = new Date(System.currentTimeMillis());
 				TableMaintenance.updateMaintenance(dbHelper, machine, new Maintenance(
-						null, null, "", currentDate, "Machine Created", currentDate, false, null
+						null, null, "empty", currentDate, "Machine Created", currentDate, false, null
 						));
+				updateMachine(dbHelper,machine);
+
 			} else {
 				//UPDATE
 				//If have id, lookup by that, it's fastest

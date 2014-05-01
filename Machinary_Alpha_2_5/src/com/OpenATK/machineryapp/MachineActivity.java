@@ -55,6 +55,7 @@ public class MachineActivity extends Activity {
 		Intent i = getIntent();
 		Integer id = (Integer) i.getIntExtra(MACHINE,0);
 		dbHelper = MainActivity.dbHelper;
+		Log.d("MachineActivity","id is: " + id);
 		machine = TableMachine.FindMachineById(dbHelper, id);
 		
 		//Getting specific information from machine
@@ -83,8 +84,9 @@ public class MachineActivity extends Activity {
 		titleT.setText(machine.getName());
 		consumablesT.setText(partInfo);
 
+
 		maintenances = dbHelper.readMaintenancesOfMachine(machine);
-		if(maintenances.size()==0){
+		if(maintenances==null){
 			Log.w("MachineActivity","maintenances empty");
 			Date currentDate = new Date(System.currentTimeMillis());
 			TableMaintenance.updateMaintenance(dbHelper, machine, new Maintenance(
@@ -93,7 +95,7 @@ public class MachineActivity extends Activity {
 			maintenances = dbHelper.readMaintenancesOfMachine(machine);
 		}
 		Log.d("MachineActivity","maintenances has at least one object named" + maintenances.get(0).getName());
-		//listview.setAdapter(new MaintenanceArrayAdapter(context, R.layout.maintenance_item, maintenances));
+		listview.setAdapter(new MaintenanceArrayAdapter( getBaseContext(), R.layout.maintenance_item, maintenances));
 
 		//Setting Button Listeners
 		maintenanceB.setOnClickListener(onClickListener);
@@ -126,8 +128,7 @@ public class MachineActivity extends Activity {
 				//TODO
 				break;			
 			case R.id.MbtnBack:
-				// TODO
-				//TableMachine.updateMachine(dbHelper, machine);
+				TableMachine.updateMachine(dbHelper, machine);
 				finish();
 				break;
 			}

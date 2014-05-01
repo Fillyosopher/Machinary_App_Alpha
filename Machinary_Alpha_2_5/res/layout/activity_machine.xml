@@ -1,299 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
-    
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="566dp" >
-    
-    <EditText
-        android:id="@+id/Mtitle"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:hint="Model Name Error" />
-    
-    <EditText
-        android:id="@+id/MAinfoPur"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/MbtnMaintenance"
-        android:layout_below="@id/Mtitle"
-        android:focusable="true"
-        android:hint="Purchase"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_height="566dp" >
 
-    <TextView
-        android:id="@+id/PurchaseTag"
-        android:layout_toLeftOf="@+id/MAinfoPur"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/Mtitle"
-        android:focusable="true"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-    <EditText
-        android:id="@+id/MAinfoYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/MAinfoPur"
-        android:layout_below="@id/MAinfoPur"
-        android:focusable="true"
-        android:hint="Year"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-   <TextView
-       android:id="@+id/YearTag"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_alignParentLeft="true"
-       android:layout_alignTop="@+id/MAinfoYear"
-       android:layout_toLeftOf="@+id/MAinfoYear"
-       android:focusable="true"
-       android:paddingBottom="5dp"
-       android:paddingTop="5dp"
-       android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-    <EditText
-        android:id="@+id/MAinfoLastG"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/MAinfoYear"
-        android:layout_below="@id/MAinfoYear"
-        android:focusable="true"
-        android:hint="Last Greased"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-    <TextView
-        android:id="@+id/LastGTag"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/YearTag"
-        android:layout_alignTop="@+id/MAinfoLastG"
-        android:focusable="true"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-    <EditText
-android:id="@+id/Mconsumables"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignParentLeft="true"
-android:layout_below="@+id/MAinfoLastS"
-android:focusable="true"
-android:hint="Consumables Error"
-android:textStyle="bold"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <EditText
+            android:id="@+id/Mtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Model Name Error"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/Oilfiltertag"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/LastSTag"
-        android:layout_below="@id/Mconsumables"
-        android:text="Engine Oil Filter :"
-        android:focusable="true"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-    <EditText
-        android:id="@+id/MAHydpump"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/MAHydfilter"
-        android:layout_toRightOf="@+id/Hydpmtag"
-        android:focusable="true"
-        android:hint="Hyd Pump Number"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-<ListView
-android:id="@+id/Mlistview"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_above="@+id/MAnote"
-android:layout_alignParentLeft="true"
-android:layout_alignParentRight="true"
-android:layout_below="@+id/MAmaintenancetag"
-android:focusable="false" >
+        <EditText
+            android:id="@+id/MAinfoPur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/Mmaintenance"
+            android:layout_below="@id/Mtitle"
+            android:focusable="true"
+            android:hint="Purchase"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    </ListView>	
+        <TextView
+            android:id="@+id/PurchaseTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/Mtitle"
+            android:layout_toLeftOf="@+id/MAinfoPur"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:id="@+id/MAnote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Note" />
-    
-    <Button
-        android:id="@+id/MAservice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MAnote"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Service" />
-    
+        <EditText
+            android:id="@+id/MAinfoYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/MAinfoPur"
+            android:layout_below="@id/MAinfoPur"
+            android:focusable="true"
+            android:hint="Year"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:id="@+id/MbtnMaintenance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MAservice"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Maintenance" />
+        <TextView
+            android:id="@+id/YearTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/MAinfoYear"
+            android:layout_toLeftOf="@+id/MAinfoYear"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    
-<Button
-        android:id="@+id/MbtnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/MbtnMaintenance"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Back" />
+        <EditText
+            android:id="@+id/MAinfoLastG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/MAinfoYear"
+            android:layout_below="@id/MAinfoYear"
+            android:focusable="true"
+            android:hint="Last Greased"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<EditText
-android:id="@+id/MAinfoLastS"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignLeft="@+id/MAinfoLastG"
-android:layout_below="@+id/MAinfoLastG"
-android:focusable="true"
-android:hint="Last Service Error"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/LastGTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/YearTag"
+            android:layout_alignTop="@+id/MAinfoLastG"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<TextView
-android:id="@+id/LastSTag"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignBottom="@+id/MAinfoLastS"
-android:layout_alignParentLeft="true"
-android:layout_below="@id/LastGTag"
-android:layout_toLeftOf="@+id/MAinfoLastS"
-android:focusable="true"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <EditText
+            android:id="@+id/Mconsumables"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/MAinfoLastS"
+            android:focusable="true"
+            android:hint="Consumables Error"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
 
-<EditText
-android:id="@+id/MAOilfil"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignBottom="@+id/Oilfiltertag"
-android:layout_alignLeft="@+id/MAinfoLastS"
-android:ems="10"
-android:focusable="true"
-android:hint="Oil Filter Number"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/Oilfiltertag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/LastSTag"
+            android:layout_below="@id/Mconsumables"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Engine Oil Filter :"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<TextView
-android:id="@+id/Transtag"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignTop="@+id/MATransfilter"
-android:layout_toLeftOf="@+id/MAOilfil"
-android:text="Transmission Filter :"
-android:focusable="true"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <EditText
+            android:id="@+id/MAHydpump"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/MAHydfilter"
+            android:layout_toRightOf="@+id/Hydpmtag"
+            android:focusable="true"
+            android:hint="Hyd Pump Number"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<EditText
-android:id="@+id/MAHydfilter"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_below="@+id/MATransfilter"
-android:layout_toRightOf="@+id/Transtag"
-android:ems="10"
-android:focusable="true"
-android:hint="Hyd Filter Number"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <ListView
+            android:id="@+id/Mlistview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/MAnote"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/MAmaintenancetag"
+            android:focusable="false" >
+        </ListView>
 
-<TextView
-android:id="@+id/Hydfltag"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignTop="@+id/MAHydfilter"
-android:layout_toLeftOf="@+id/MAHydfilter"
-android:text="Hyd Filter number :"
-android:focusable="true"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Button
+            android:id="@+id/MAnote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="Note"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<TextView
-android:id="@+id/Hydpmtag"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignBottom="@+id/MAHydpump"
-android:layout_toLeftOf="@+id/MAHydfilter"
-android:text="Hyd pump :"
-android:focusable="true"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Button
+            android:id="@+id/MAservice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/MAnote"
+            android:text="Service"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<TextView
-android:id="@+id/MAmaintenancetag"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignParentLeft="true"
-android:layout_below="@+id/MAHydpump"
-android:focusable="true"
-android:gravity="center"
-android:text="Maintenance History"
-android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Button
+            android:id="@+id/MbtnMaintenance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/MAservice"
+            android:text="Maintenance"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<EditText
-android:id="@+id/MATransfilter"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_alignLeft="@+id/MAOilfil"
-android:layout_alignParentRight="true"
-android:layout_below="@+id/MAOilfil"
-android:ems="10"
-android:focusable="true"
-android:hint="Year"
-android:paddingBottom="5dp"
-android:paddingTop="5dp"
-android:textAppearance="?android:attr/textAppearanceSmall" >
+        <Button
+            android:id="@+id/MbtnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/Mmaintenance"
+            android:text="Back"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-<requestFocus />
-</EditText>
+        <EditText
+            android:id="@+id/MAinfoLastS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/MAinfoLastG"
+            android:layout_below="@+id/MAinfoLastG"
+            android:focusable="true"
+            android:hint="Last Service Error"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/LastSTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/MAinfoLastS"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/LastGTag"
+            android:layout_toLeftOf="@+id/MAinfoLastS"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/MAOilfil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/Oilfiltertag"
+            android:layout_alignLeft="@+id/MAinfoLastS"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="Oil Filter Number"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/Transtag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/MATransfilter"
+            android:layout_toLeftOf="@+id/MAOilfil"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Transmission Filter :"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/MAHydfilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/MATransfilter"
+            android:layout_toRightOf="@+id/Transtag"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="Hyd Filter Number"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/Hydfltag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/MAHydfilter"
+            android:layout_toLeftOf="@+id/MAHydfilter"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Hyd Filter number :"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/Hydpmtag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/MAHydpump"
+            android:layout_toLeftOf="@+id/MAHydfilter"
+            android:focusable="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Hyd pump :"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/MAmaintenancetag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/MAHydpump"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="Maintenance History"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/MATransfilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/MAOilfil"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/MAOilfil"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="Year"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+
+            <requestFocus />
+        </EditText>
+    </RelativeLayout>
+
 </ScrollView>
