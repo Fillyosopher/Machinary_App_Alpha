@@ -121,31 +121,42 @@ containing a value of this type.
         public static final int text_background_selector=0x7f020005;
     }
     public static final class id {
-        public static final int addColumnButton=0x7f040008;
-        public static final int addRowButton=0x7f04000c;
+        public static final int MAnote=0x7f040008;
+        public static final int MbtnBack=0x7f04000c;
+        public static final int MbtnGrease=0x7f04000a;
+        public static final int MbtnMaintenance=0x7f04000b;
+        public static final int MbtnNote=0x7f040009;
+        public static final int Mconsumables=0x7f040005;
+        public static final int Minfo=0x7f040004;
+        public static final int Mlistview=0x7f040007;
+        public static final int Mmaintenance=0x7f040006;
+        public static final int Mtitle=0x7f040003;
+        public static final int addColumnButton=0x7f040012;
+        public static final int addRowButton=0x7f040016;
         public static final int alwaysScroll=0x7f040002;
-        public static final int columnTitleTextView=0x7f04000a;
+        public static final int columnTitleTextView=0x7f040014;
         public static final int disabled=0x7f040000;
-        public static final int innerMachineListView=0x7f04000b;
-        public static final int line1=0x7f040010;
-        public static final int line2=0x7f040011;
-        public static final int line3=0x7f040012;
-        public static final int name=0x7f04000f;
+        public static final int innerMachineListView=0x7f040015;
+        public static final int line1=0x7f04001a;
+        public static final int line2=0x7f04001b;
+        public static final int line3=0x7f04001c;
+        public static final int name=0x7f040019;
         public static final int normal=0x7f040001;
-        public static final int orderByGreaseButton=0x7f040005;
-        public static final int orderByMaintenanceButton=0x7f040006;
-        public static final int orderByNameButton=0x7f040004;
-        public static final int outerMachineListView=0x7f040007;
-        public static final int removeColumnButton=0x7f040009;
-        public static final int removeRowButton=0x7f04000d;
-        public static final int searchByEditText=0x7f040003;
-        public static final int year=0x7f04000e;
+        public static final int orderByGreaseButton=0x7f04000f;
+        public static final int orderByMaintenanceButton=0x7f040010;
+        public static final int orderByNameButton=0x7f04000e;
+        public static final int outerMachineListView=0x7f040011;
+        public static final int removeColumnButton=0x7f040013;
+        public static final int removeRowButton=0x7f040017;
+        public static final int searchByEditText=0x7f04000d;
+        public static final int year=0x7f040018;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int column_item_1=0x7f030001;
-        public static final int empty_col_item=0x7f030002;
-        public static final int row_item_1=0x7f030003;
+        public static final int activity_machine=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int column_item_1=0x7f030002;
+        public static final int empty_col_item=0x7f030003;
+        public static final int row_item_1=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f060000;

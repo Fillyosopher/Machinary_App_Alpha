@@ -37,6 +37,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/name"
         android:gravity="center_vertical"
+        android:minHeight="0dp"
         android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -48,6 +49,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/line1"
         android:gravity="center_vertical"
+        android:minHeight="0dp"
         android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -59,6 +61,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/line2"
         android:gravity="center_vertical"
+        android:minHeight="0dp"
         android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

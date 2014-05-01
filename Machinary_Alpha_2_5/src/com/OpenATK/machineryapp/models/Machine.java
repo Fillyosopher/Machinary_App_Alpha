@@ -1,8 +1,11 @@
 package com.OpenATK.machineryapp.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Machine {
+public class Machine implements Serializable {
+	
+	private static final long serialVersionUID = -5097870073357263432L;
 	
 	private Integer id = null;
 	private String remote_id = null;
@@ -32,7 +35,6 @@ public class Machine {
 	public Machine(){
 
 	}
-
 
 	public Machine(Integer id, String remote_id, String name,
 			Date dateNameChanged, Integer list, Date dateListChanged, 

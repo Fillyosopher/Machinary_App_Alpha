@@ -7,12 +7,15 @@ import java.util.Date;
 import java.util.List;
 
 import com.OpenATK.machineryapp.db.DatabaseHelper;
+import com.OpenATK.machineryapp.db.TableMachine;
 import com.OpenATK.machineryapp.db.TableMachineTypeList;
+import com.OpenATK.machineryapp.models.Machine;
 import com.OpenATK.machineryapp.models.MachineTypeList;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +35,8 @@ public class MainActivity extends Activity {
 	public static int STATE_SORTBY_NAME = 0;
 	public static int STATE_SORTBY_GREASED = 1;
 	public static int STATE_SORTBY_MAINTENANCE = 2;
+	
+	public final static String MACHINE = "com.OpenATK.machineryapp.MACHINE";
 
 	private int state;
 		

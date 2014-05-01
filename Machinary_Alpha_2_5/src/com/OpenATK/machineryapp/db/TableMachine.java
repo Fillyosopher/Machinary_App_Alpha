@@ -65,7 +65,7 @@ public class TableMachine {
 
 		//TODO handle upgrade
 		public static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-			Log.d("TableFields - onUpgrade", "Upgrade from " + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
+			Log.d("TableMachine - onUpgrade", "Upgrade from " + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
 	    	int version = oldVersion;
 	    	switch(version){
 	    		case 1: //Launch
@@ -191,10 +191,13 @@ public class TableMachine {
 
 
 			if(machine.getId() == null && (machine.getRemote_id() == null || machine.getRemote_id().length() == 0)) {
-				//INSERT This is a new worker, has no id's
+				//INSERT This is a new machine, has no id's
 				int id = (int) database.insert(TableMachine.TABLE_NAME, null, values);
 				machine.setId(id);
 				ret = true;
+				
+				machine.setMaintenanceTableName("maintenance" + machine.getId().toString());
+				TableMaintenance.onCreate(database, machine);
 			} else {
 				//UPDATE
 				//If have id, lookup by that, it's fastest

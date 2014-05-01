@@ -10,6 +10,7 @@ import java.util.TimeZone;
 
 import com.OpenATK.machineryapp.models.Machine;
 import com.OpenATK.machineryapp.models.MachineTypeList;
+import com.OpenATK.machineryapp.models.Maintenance;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -36,6 +37,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase database) {
 		TableMachineTypeList.onCreate(database);
 		TableMachine.onCreate(database);
+		List<Machine> list = readMachines();
+		for (int i = 0; i<list.size();i++){
+			TableMaintenance.onCreate(database, list.get(i));
+		}
 	}
 
 
@@ -43,6 +48,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 		TableMachineTypeList.onUpgrade(database, oldVersion, newVersion);
 		TableMachine.onUpgrade(database, oldVersion, newVersion);
+		List<Machine> list = readMachines();
+		for (int i = 0; i<list.size();i++){
+			TableMaintenance.onUpgrade(database, list.get(i), oldVersion, newVersion);
+		}
+		
 	}
 	
 	/*
@@ -229,5 +239,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		database.close();
 		dbHelper.close();
 		return machine;
+	}
+	
+	public List<Maintenance> readMaintenancesOfMachine(Machine machine){
+		return DatabaseHelper.readMaintenancesOfMachine(this, machine);
+	}
+	public static List<Maintenance> readMaintenancesOfMachine(DatabaseHelper dbHelper, Machine machine){
+		String tableName = machine.getMaintenanceTableName();
+		List<Maintenance> maintenance = new ArrayList<Maintenance>();
+		Maintenance addmaintenance;
+		SQLiteDatabase database = dbHelper.getReadableDatabase();
+
+		String selectQuery = "SELECT  * FROM " + tableName;
+		Cursor cursor = database.rawQuery(selectQuery, null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				addmaintenance = TableMaintenance.cursorToMaintenance(cursor);
+				if (addmaintenance.getDeleted()==false){
+					maintenance.add(addmaintenance);
+				}
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+
+		database.close();
+		dbHelper.close();
+		return maintenance;
 	}
 }

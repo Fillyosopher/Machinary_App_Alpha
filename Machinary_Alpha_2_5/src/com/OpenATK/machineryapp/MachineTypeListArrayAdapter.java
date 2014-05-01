@@ -9,20 +9,21 @@ import com.OpenATK.machineryapp.models.Machine;
 import com.OpenATK.machineryapp.models.MachineTypeList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
-	public static final Integer POSITION_TAG = 0;
-	public static final Integer LISTVIEW_TAG = 1;
-
+public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList>{
+	public final static String MACHINE = "com.OpenATK.machineryapp.MACHINE";
+	
 	private final Context context;
 	private List<MachineTypeList> lists = null;
 	private int resId;
@@ -91,6 +92,17 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 				bHolder.position = position;
 
 				holder.innerList.setAdapter(new MachineArrayAdapter(this.context,innerResId,machineList));	
+				holder.innerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		            @Override
+		            public void onItemClick(AdapterView<?> parent, View view, int position,
+		                    long id) {
+		            	Machine machine= (Machine) parent.getAdapter().getItem(position);
+		                Intent intent = new Intent(MachineTypeListArrayAdapter.this.context, MachineActivity.class);
+		                intent.putExtra(MACHINE, machine);
+		                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		                context.startActivity(intent);
+		            }
+		        });
 
 				holder.buttonAddRow.setOnClickListener(rowEditListener);
 				holder.buttonRemoveRow.setOnClickListener(rowEditListener);
@@ -124,7 +136,7 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 		}
 		return col;
 	}
-
+	
 	static class Holder
 	{
 		TextView txtTitle;
@@ -138,7 +150,7 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 		Integer position;
 		ListView innerList;
 	}
-
+	
 	protected OnClickListener rowEditListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -158,8 +170,8 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 						lists.get(position).getId(),currentDate,
 						"20XX", currentDate,
 						position, currentDate,
-						null, currentDate, 
-						null, currentDate, null,
+						null, null, 
+						null, null, null,
 						false, null
 						));
 				if (!added){
@@ -194,4 +206,6 @@ public class MachineTypeListArrayAdapter extends ArrayAdapter<MachineTypeList> {
 			}
 		}//onClick
 	};//rowEditListener
+	
+	
 }

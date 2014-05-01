@@ -46,7 +46,7 @@ public class TableMachineTypeList {
 
 		//TODO handle upgrade
 		public static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-			Log.d("TableFields - onUpgrade", "Upgrade from " + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
+			Log.d("TableMachineTypeList - onUpgrade", "Upgrade from " + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
 	    	int version = oldVersion;
 	    	switch(version){
 	    		case 1: //Launch
@@ -147,7 +147,7 @@ public class TableMachineTypeList {
 
 
 			if(list.getId() == null && (list.getRemote_id() == null || list.getRemote_id().length() == 0)) {
-				//INSERT This is a new worker, has no id's
+				//INSERT This is a new list, has no id's
 				int id = (int) database.insert(TableMachineTypeList.TABLE_NAME, null, values);
 				list.setId(id);
 				ret = true;
